@@ -1,0 +1,3 @@
+rootProject.name = 'myeonjeobjjang'
+include 'myeonjeobjjang-app-api', 'myeonjeobjjang-domain-test'
+

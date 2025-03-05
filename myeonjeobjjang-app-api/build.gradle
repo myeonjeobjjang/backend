@@ -1,7 +1,0 @@
-dependencies {
-	implementation 'org.springframework.boot:spring-boot-starter-web'
-	testImplementation 'org.springframework.boot:spring-boot-starter-test'
-//    implementation 'org.springframework.ai:spring-ai-spring-boot-autoconfigure'
-	testRuntimeOnly 'org.junit.platform:junit-platform-launcher'
-	implementation project(':myeonjeobjjang-domain-test')
-}

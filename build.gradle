@@ -10,6 +10,15 @@ repositories {
 }
 
 subprojects {
+    if (!project.childProjects.isEmpty()) return
+    if (project.getName().matches("(boot)")) {
+        bootJar = true
+    }
+    else {
+        bootJar {enabled = false}
+        jar {enabled = true}
+    }
+
     group = 'org.myeonjeobjjang'
     version = '1.0-SNAPSHOT'
 
@@ -42,15 +51,4 @@ subprojects {
     tasks.named('test') {
         useJUnitPlatform()
     }
-}
-
-project(':myeonjeobjjang-app-api') {
-    dependencies {
-        compileOnly project(':myeonjeobjjang-domain-test')
-    }
-}
-
-project(':myeonjeobjjang-domain-test') {
-    bootJar {enabled = false}
-    jar {enabled = true}
 }

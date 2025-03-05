@@ -1,3 +1,15 @@
 rootProject.name = 'myeonjeobjjang'
-include 'myeonjeobjjang-app-api', 'myeonjeobjjang-domain-test'
 
+include ':myeonjeobjjang-boot:myeonjeobjjang-boot-api'
+include ':myeonjeobjjang-boot:myeonjeobjjang-boot-aiagent'
+
+include ':myeonjeobjjang-common:myeonjeobjjang-common-auth'
+
+include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core'
+include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core-vectordb'
+include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core-rdb'
+
+include ':myeonjeobjjang-infra:myeonjeobjjang-infra-ai'
+include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-ai'
+include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-openai'
+include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-ocr'

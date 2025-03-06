@@ -1,12 +1,14 @@
 plugins {
     id 'java'
-    id 'org.springframework.boot' version '3.4.3'
+    id 'org.springframework.boot' version '3.3.4'
     id 'io.spring.dependency-management' version '1.1.7'
 }
 
 
 repositories {
     mavenCentral()
+    maven { url 'https://repo.spring.io/milestone' }
+    maven { url 'https://repo.spring.io/snapshot' }
 }
 
 subprojects {
@@ -28,6 +30,10 @@ subprojects {
         }
     }
 
+    ext {
+        set('springAiVersion', "1.0.0-M6")
+    }
+
     apply plugin: 'java'
     apply plugin: 'java-library'
     apply plugin: 'org.springframework.boot'
@@ -44,7 +50,7 @@ subprojects {
     }
 
     dependencies {
-        compileOnly 'org.projectlombok:lombok'
+        implementation 'org.projectlombok:lombok'
         annotationProcessor 'org.projectlombok:lombok'
     }
 

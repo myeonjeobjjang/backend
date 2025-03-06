@@ -1,0 +1,6 @@
+spring:
+  config:
+    import:
+    - 'classpath:application-infra-client-llm.yml'
+    - 'classpath:application-domain-core-vectordb.yml'
+#    - 'classpath:application-infra-client-ocr.yml'

@@ -9,3 +9,6 @@ Content-Type: application/json
 
 ### GET test entity
 GET http://localhost:8080/test/1
+
+### GET simple question
+GET http://localhost:8080/?question=넌누구야

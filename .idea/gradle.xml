@@ -1,5 +1,6 @@
 <?xml version="1.0" encoding="UTF-8"?>
 <project version="4">
+  <component name="GradleMigrationSettings" migrationVersion="1" />
   <component name="GradleSettings">
     <option name="linkedExternalProjectsSettings">
       <GradleProjectSettings>
@@ -8,20 +9,19 @@
         <option name="modules">
           <set>
             <option value="$PROJECT_DIR$" />
-            <option value="$PROJECT_DIR$/myeonjeobjjang-app-api" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-boot" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-boot/myeonjeobjjang-boot-aiagent" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-boot/myeonjeobjjang-boot-api" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-common" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-common/myeonjeobjjang-common-auth" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-domain" />
-            <option value="$PROJECT_DIR$/myeonjeobjjang-domain-test" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-domain/myeonjeobjjang-domain-core" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-domain/myeonjeobjjang-domain-core-rdb" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-domain/myeonjeobjjang-domain-core-vectordb" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-infra" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-infra/myeonjeobjjang-infra-ai" />
-            <option value="$PROJECT_DIR$/myeonjeobjjang-infra/myeonjeobjjang-infra-client-ai" />
+            <option value="$PROJECT_DIR$/myeonjeobjjang-infra/myeonjeobjjang-infra-client-llm" />
+            <option value="$PROJECT_DIR$/myeonjeobjjang-infra/myeonjeobjjang-infra-client-ocr" />
             <option value="$PROJECT_DIR$/myeonjeobjjang-infra/myeonjeobjjang-infra-client-openai" />
           </set>
         </option>

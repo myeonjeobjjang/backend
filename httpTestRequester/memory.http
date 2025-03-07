@@ -1,0 +1,17 @@
+### 대화 시작
+POST http://localhost:8080/memory
+Content-Type: application/json
+
+{
+  "content" : "안녕 나는 고망고라고 해!",
+  "userId" : 1
+}
+
+### 메모리 확인
+POST http://localhost:8080/memory
+Content-Type: application/json
+
+{
+  "content" : "내가 누구랬지?",
+  "userId" : 1
+}

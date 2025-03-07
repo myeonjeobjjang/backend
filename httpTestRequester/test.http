@@ -1,0 +1,14 @@
+### POST test entity
+POST http://localhost:8080/test
+Content-Type: application/json
+
+{
+  "data" : "hello",
+  "writer" : "jw"
+}
+
+### GET test entity
+GET http://localhost:8080/test/1
+
+### GET simple question
+GET http://localhost:8080/?question=넌누구야

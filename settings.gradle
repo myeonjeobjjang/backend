@@ -10,6 +10,7 @@ include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core-vectordb'
 include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core-rdb'
 
 include ':myeonjeobjjang-infra:myeonjeobjjang-infra-ai'
-include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-ai'
+include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-llm'
 include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-openai'
 include ':myeonjeobjjang-infra:myeonjeobjjang-infra-client-ocr'
+include ':myeonjeobjjang-domain:myeonjeobjjang-domain-chat-rdb'

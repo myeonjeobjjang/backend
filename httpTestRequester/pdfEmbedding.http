@@ -1,0 +1,18 @@
+### POST pdf embedding
+POST http://localhost:8080/pdf/embedding
+Content-Type: application/json
+
+{
+"fileName" : "filename.pdf",
+"userName" : "이재원"
+}
+
+### POST retrieve pdf result
+POST http://localhost:8080/pdf/retrieve
+Content-Type: application/json
+
+{
+"companyName" : "oracle",
+"fileName" : "filename.pdf",
+"userName" : "이재원"
+}

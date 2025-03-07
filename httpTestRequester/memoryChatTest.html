@@ -1,0 +1,177 @@
+<!DOCTYPE html>
+<html lang="ko">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>실시간 채팅 (SSE)</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body { font-family: Arial, sans-serif; display: flex; justify-content: center; align-items: center; height: 100vh; background-color: #f4f4f4; }
+        #chat-container {
+            width: 80vw; height: 90vh;
+            display: flex; flex-direction: column;
+            border: 2px solid #ccc; border-radius: 10px;
+            background: white; padding: 10px;
+        }
+        #chat-box {
+            flex-grow: 1; overflow-y: auto;
+            border-bottom: 1px solid #ccc; padding: 10px;
+            display: flex; flex-direction: column; gap: 8px;
+        }
+        .message-container { display: flex; width: 100%; }
+        .user-container { justify-content: flex-end; }
+        .server-container { justify-content: flex-start; }
+        .message {
+            max-width: 60%;
+            padding: 10px;
+            border-radius: 10px;
+            word-wrap: break-word;
+        }
+        .user { background-color: #dcf8c6; text-align: right; align-self: flex-end; }
+        .server { background-color: #f1f1f1; text-align: left; align-self: flex-start; }
+        #input-container { display: flex; padding: 10px; gap: 10px; }
+        #user-id { width: 60px; padding: 5px; text-align: center; }
+        #user-input { flex: 1; padding: 5px; }
+        #send-btn { padding: 5px 15px; }
+        #send-btn:disabled { background-color: #ccc; cursor: not-allowed; }
+    </style>
+</head>
+<body>
+<div id="chat-container">
+    <div id="chat-box"></div>
+    <div id="input-container">
+        <input type="number" id="user-id" placeholder="ID" min="1" value="1" />
+        <input type="text" id="user-input" placeholder="메시지를 입력하세요..." />
+        <button id="send-btn">전송</button>
+    </div>
+</div>
+
+<script>
+    document.getElementById('send-btn').addEventListener('click', sendMessage);
+    document.getElementById('user-input').addEventListener('keypress', function (e) {
+        if (e.key === 'Enter') sendMessage();
+    });
+
+    let eventSource;
+    let currentServerMessage = ''; // 서버 메시지 누적
+    let lastMessageTime = 0; // 마지막 메시지 전송 시간
+    let currentMessageContainer = null; // 현재 대화 블록을 추적
+    let messageSentTime = 0;
+
+    function sendMessage() {
+        const userIdInput = document.getElementById('user-id');
+        const userInput = document.getElementById('user-input');
+        const message = userInput.value.trim();
+        const userId = userIdInput.value.trim();
+        if (!message || !userId) return;
+
+        // 사용자 메시지 추가
+        addMessage("user", `(${userId}) : ${message}`, null, null);
+
+        // 전송 버튼 비활성화
+        const sendButton = document.getElementById('send-btn');
+        sendButton.disabled = true;
+
+        // 기존 SSE 연결 종료 후 재연결
+        if (eventSource) {
+            eventSource.close();
+        }
+
+        // 서버에 메시지 전송 (POST 요청)
+        fetch("http://localhost:8080/memory", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify({ content: message, userId: userId })
+        }).then(response => {
+            if (!response.ok) throw new Error("서버 요청 실패");
+            return response.body;
+        }).then(body => {
+            const reader = body.getReader();
+            const decoder = new TextDecoder();
+            messageSentTime = new Date().getTime();
+
+            function readStream() {
+                reader.read().then(({ value, done }) => {
+                    if (done) {
+                        // 모든 데이터 수신 완료 후, 마지막 메시지 출력
+                        if (currentServerMessage) {
+                            addMessage("server", currentServerMessage.replace("data:",""), currentMessageContainer, messageSentTime);
+                        }
+                        currentServerMessage = '';  // 메시지 초기화
+
+                        // 전송 버튼 활성화
+                        sendButton.disabled = false;
+                        return;
+                    }
+
+                    // 데이터를 스트림으로 읽어 계속해서 누적
+                    const newMessage = decoder.decode(value, { stream: true });
+                    currentServerMessage += newMessage.replaceAll("data:","").replaceAll("\n", ""); // 같은 대화 블록에 누적
+
+                    // 바로바로 메시지 화면에 추가
+                    addMessage("server", currentServerMessage, currentMessageContainer, messageSentTime);
+
+                    // 계속해서 스트림 읽기
+                    readStream();
+                });
+            }
+
+            currentMessageContainer = createNewMessageContainer(); // 새로운 블록 생성
+            readStream();
+        }).catch(error => {
+            console.error("메시지 전송 중 오류 발생:", error);
+            // 전송 버튼 활성화
+            sendButton.disabled = false;
+        });
+
+        // 입력 필드 초기화 (userId는 유지)
+        userInput.value = "";
+    }
+
+    // 새로운 대화 블록을 생성
+    function createNewMessageContainer() {
+        const chatBox = document.getElementById('chat-box');
+        const messageContainer = document.createElement('div');
+        messageContainer.classList.add('message-container', 'server-container');
+        chatBox.appendChild(messageContainer);
+        return messageContainer;
+    }
+
+    function addMessage(sender, text, prevContainer, messageSentTime) {
+        const chatBox = document.getElementById('chat-box');
+
+        messageContainer = null;
+        if(prevContainer == null) {
+            messageContainer = document.createElement('div');
+            messageContainer.classList.add('message-container', sender + '-container');
+
+            const messageDiv = document.createElement('div');
+            messageDiv.classList.add('message', sender);
+            if(messageSentTime == null) {
+                messageSentTime = new Date().getTime();
+            }
+            messageDiv.id = 'messsage-' + messageSentTime;
+            messageDiv.innerText = text;
+
+            messageContainer.appendChild(messageDiv);
+            chatBox.appendChild(messageContainer);
+        }
+        else {
+            messageContainer = prevContainer;
+
+            messageDiv = document.getElementById('messsage-' + messageSentTime);
+            if(messageDiv == null) {
+                messageDiv = document.createElement('div');
+                messageDiv.classList.add('message', sender);
+                messageDiv.id = 'messsage-' + messageSentTime;
+                messageContainer.appendChild(messageDiv);
+            }
+            messageDiv.innerText = text;
+        }
+
+        // 스크롤을 가장 아래로 이동
+        chatBox.scrollTop = chatBox.scrollHeight;
+    }
+</script>
+</body>
+</html>

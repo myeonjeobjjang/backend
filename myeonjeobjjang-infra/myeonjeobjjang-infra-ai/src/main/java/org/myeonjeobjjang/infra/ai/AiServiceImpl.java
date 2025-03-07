@@ -11,6 +11,7 @@ import org.myeonjeobjjang.infra.client.ocr.OcrService;
 import org.myeonjeobjjang.infra.client.ocr.dto.InfraOcrResponse;
 import org.springframework.ai.document.Document;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 import java.util.List;
 
@@ -67,5 +68,10 @@ public class AiServiceImpl implements AiService {
         } catch (JsonProcessingException e) {
             return InfraAiResponse.TechRecruitmentResponse.builder().build();
         }
+    }
+
+    @Override
+    public Flux<String> memoryStreamChat(String message, long userId) {
+        return llmClientService.memoryStreamChat(message, String.format("userId-%d", userId));
     }
 }

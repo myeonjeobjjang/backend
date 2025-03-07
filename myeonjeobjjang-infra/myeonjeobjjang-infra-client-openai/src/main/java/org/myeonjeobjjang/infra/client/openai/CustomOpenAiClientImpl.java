@@ -6,11 +6,13 @@ import lombok.RequiredArgsConstructor;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
 import org.springframework.ai.chat.client.ChatClient;
+import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;
 import org.springframework.ai.chat.prompt.Prompt;
 import org.springframework.ai.openai.OpenAiChatModel;
 import org.springframework.ai.openai.OpenAiChatOptions;
 import org.springframework.ai.openai.api.OpenAiApi;
 import org.springframework.stereotype.Service;
+import reactor.core.publisher.Flux;
 
 @Service
 @RequiredArgsConstructor
@@ -37,5 +39,15 @@ public class CustomOpenAiClientImpl implements CustomOpenAiClient {
         T response = objectMapper.readValue(res, responseType);
         log.debug(response.toString());
         return response;
+    }
+
+    @Override
+    public Flux<String> memoryStreamChat(String message, MessageChatMemoryAdvisor advisor) {
+        return ChatClient.builder(openAiChatModel).build()
+            .prompt()
+            .advisors(advisor)
+            .user(message)
+            .stream()
+            .content();
     }
 }

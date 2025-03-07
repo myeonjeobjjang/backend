@@ -4,12 +4,14 @@ import jakarta.validation.Valid;
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.infra.ai.AiService;
 import org.myeonjeobjjang.infra.ai.dto.InfraAiRequest;
-import org.myeonjeobjjang.techRecruit.dto.TechRecruitRequest;
+import org.myeonjeobjjang.techRecruit.dto.AiRequest;
 import org.springframework.web.bind.annotation.*;
+import reactor.core.publisher.Flux;
 
 @RestController
+@CrossOrigin(origins = "*")
 @RequiredArgsConstructor
-public class TechRecruitController {
+public class AiController {
     private final AiService aiService;
 
     @GetMapping
@@ -18,7 +20,7 @@ public class TechRecruitController {
     }
 
     @PostMapping("/pdf/embedding")
-    public Integer embeddingPdf(@RequestBody @Valid TechRecruitRequest.EmbeddingRequest request) {
+    public Integer embeddingPdf(@RequestBody @Valid AiRequest.EmbeddingRequest request) {
         return aiService.embeddingPdf(InfraAiRequest.EmbeddingPdfRequest.builder()
             .fileName(request.fileName())
             .userName(request.userName())
@@ -26,11 +28,16 @@ public class TechRecruitController {
     }
 
     @PostMapping("/pdf/retrieve")
-    public Object retrievePdfResult(@RequestBody @Valid TechRecruitRequest.RetreieveRequest request) {
+    public Object retrievePdfResult(@RequestBody @Valid AiRequest.RetreieveRequest request) {
         return aiService.retrievePdfResult(InfraAiRequest.TechRecruitmentRequest.builder()
             .companyName(request.companyName())
             .fileName(request.fileName())
             .userName(request.userName())
             .build());
+    }
+
+    @PostMapping(value = "/memory", produces = "text/event-stream")
+    public Flux<String> simpleMemoryChat(@RequestBody AiRequest.SimpleMemoryChatRequest request) {
+        return aiService.memoryStreamChat(request.content(), request.userId());
     }
 }

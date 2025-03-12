@@ -1,7 +1,7 @@
 package org.myeonjeobjjang.member;
 
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.common.security.PrincipalDetails;
+import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.member.service.MemberService;
 import org.myeonjeobjjang.domain.core.member.service.dto.IntegrationMemberRequest;

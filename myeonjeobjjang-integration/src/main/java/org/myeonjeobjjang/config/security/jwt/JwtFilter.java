@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.common.security.jwt;
+package org.myeonjeobjjang.config.security.jwt;
 
 import jakarta.servlet.FilterChain;
 import jakarta.servlet.ServletException;

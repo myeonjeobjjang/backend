@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.common.security;
+package org.myeonjeobjjang.config.security;
 
 import lombok.Getter;
 import org.myeonjeobjjang.domain.core.member.entity.Member;

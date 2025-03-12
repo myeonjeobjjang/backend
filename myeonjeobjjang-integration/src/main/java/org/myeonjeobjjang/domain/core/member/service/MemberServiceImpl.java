@@ -1,8 +1,8 @@
 package org.myeonjeobjjang.domain.core.member.service;
 
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.common.security.jwt.JwtTokenProvider;
-import org.myeonjeobjjang.common.security.jwt.JwtType;
+import org.myeonjeobjjang.config.security.jwt.JwtTokenProvider;
+import org.myeonjeobjjang.config.security.jwt.JwtType;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.member.repository.MemberRepository;
 import org.myeonjeobjjang.domain.core.member.service.dto.IntegrationMemberRequest;

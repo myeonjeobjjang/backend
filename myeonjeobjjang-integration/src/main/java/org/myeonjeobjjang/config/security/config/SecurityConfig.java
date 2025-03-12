@@ -1,8 +1,8 @@
-package org.myeonjeobjjang.common.security.config;
+package org.myeonjeobjjang.config.security.config;
 
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.common.security.jwt.JwtFilter;
-import org.myeonjeobjjang.common.security.jwt.JwtTokenProvider;
+import org.myeonjeobjjang.config.security.jwt.JwtFilter;
+import org.myeonjeobjjang.config.security.jwt.JwtTokenProvider;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;

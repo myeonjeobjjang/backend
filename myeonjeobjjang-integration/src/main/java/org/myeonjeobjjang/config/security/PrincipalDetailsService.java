@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.common.security;
+package org.myeonjeobjjang.config.security;
 
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.member.repository.MemberRepository;

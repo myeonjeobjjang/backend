@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.common.security.jwt;
+package org.myeonjeobjjang.config.security.jwt;
 
 import io.jsonwebtoken.ExpiredJwtException;
 import io.jsonwebtoken.Jwts;
@@ -6,8 +6,8 @@ import io.jsonwebtoken.MalformedJwtException;
 import io.jsonwebtoken.UnsupportedJwtException;
 import jakarta.annotation.PostConstruct;
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.common.security.PrincipalDetails;
-import org.myeonjeobjjang.common.security.PrincipalDetailsService;
+import org.myeonjeobjjang.config.security.PrincipalDetails;
+import org.myeonjeobjjang.config.security.PrincipalDetailsService;
 import org.myeonjeobjjang.exception.BaseException;
 import org.springframework.beans.factory.annotation.Value;
 import org.springframework.security.authentication.UsernamePasswordAuthenticationToken;

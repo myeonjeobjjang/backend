@@ -1,8 +1,10 @@
 rootProject.name = 'myeonjeobjjang'
 
+include ':myeonjeobjjang-boot:myeonjeobjjang-boot-advice'
 include ':myeonjeobjjang-boot:myeonjeobjjang-boot-api'
 include ':myeonjeobjjang-boot:myeonjeobjjang-boot-aiagent'
 
+include ':myeonjeobjjang-common:myeonjeobjjang-common-exception'
 include ':myeonjeobjjang-common:myeonjeobjjang-common-auth'
 
 include ':myeonjeobjjang-domain:myeonjeobjjang-domain-core'

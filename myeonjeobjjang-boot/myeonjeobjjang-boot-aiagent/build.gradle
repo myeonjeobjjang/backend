@@ -5,4 +5,5 @@ dependencies {
     implementation 'io.projectreactor:reactor-core'
     implementation project(':myeonjeobjjang-boot:myeonjeobjjang-boot-advice')
     implementation project(':myeonjeobjjang-integration')
+    implementation 'org.springframework.security:spring-security-core'
 }

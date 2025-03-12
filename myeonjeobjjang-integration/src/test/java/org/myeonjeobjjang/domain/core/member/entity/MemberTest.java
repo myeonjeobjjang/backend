@@ -14,20 +14,18 @@ class MemberTest extends MyeonjeobjjangIntegrationTestSupport {
         // given
         String userName = "망고";
         String email = "mango@email.com";
-        String password = "passsentence";
 
         // when
         Member member = Member.builder()
             .userName(userName)
             .email(email)
-            .password(password)
             .build();
 
         // then
         assertThat(member)
-            .extracting("userName", "email", "password")
+            .extracting("userName", "email")
             .containsExactlyInAnyOrder(
-                userName, email, password
+                userName, email
             );
     }
 }

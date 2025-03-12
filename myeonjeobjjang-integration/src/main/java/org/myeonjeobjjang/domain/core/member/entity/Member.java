@@ -17,12 +17,13 @@ public class Member extends BaseEntity {
     private String userName;
     @Column(updatable = false)
     private String email;
-    private String password;
+    @Enumerated(value = EnumType.STRING)
+    private Role role;
 
     @Builder
-    private Member(String userName, String email, String password) {
+    private Member(String userName, String email) {
         this.userName = userName;
         this.email = email;
-        this.password = password;
+        this.role = Role.MEMBER;
     }
 }

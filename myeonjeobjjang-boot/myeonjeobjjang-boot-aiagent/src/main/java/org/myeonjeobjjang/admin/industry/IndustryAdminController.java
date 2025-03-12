@@ -12,7 +12,7 @@ import org.springframework.web.bind.annotation.*;
 @RestController
 @RequestMapping("/api/admin/industries")
 @RequiredArgsConstructor
-public class IndustryController {
+public class IndustryAdminController {
     private final IndustryService industryService;
 
     public record CreateIndustryRequest(
@@ -25,10 +25,5 @@ public class IndustryController {
     @PostMapping
     public ResponseEntity<IntegrationIndustryResponse.IntegrationIndustryInfoResponse> createIndustry(@RequestBody @Validated CreateIndustryRequest request) {
         return ResponseEntity.ok(industryService.save(new IntegrationIndustryRequest.IntegrationIndustryCreateRequest(request.industryName(), request.industryInformation())));
-    }
-
-    @GetMapping("/{industryId}")
-    public ResponseEntity<IntegrationIndustryResponse.IntegrationIndustryInfoResponse> getIndustry(@PathVariable Long industryId) {
-        return ResponseEntity.ok(industryService.get(industryId));
     }
 }

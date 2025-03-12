@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.member.dto;
+package org.myeonjeobjjang.visitor.member.dto;
 
 import org.myeonjeobjjang.domain.core.member.entity.Role;
 

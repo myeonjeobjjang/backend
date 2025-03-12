@@ -54,6 +54,12 @@ subprojects {
         annotationProcessor 'org.projectlombok:lombok'
     }
 
+    if(project.getName() != "myeonjeobjjang-common-exception") {
+        dependencies {
+            implementation project(":myeonjeobjjang-common:myeonjeobjjang-common-exception")
+        }
+    }
+
     tasks.named('test') {
         useJUnitPlatform()
     }

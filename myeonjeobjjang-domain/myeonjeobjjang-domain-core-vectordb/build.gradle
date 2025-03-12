@@ -1,7 +1,0 @@
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    //vectordb로 postgresql의 pgvector 사용
-    implementation "org.springframework.ai:spring-ai-pgvector-store-spring-boot-starter:${springAiVersion}"
-    implementation "org.springframework.ai:spring-ai-openai:${springAiVersion}"
-}

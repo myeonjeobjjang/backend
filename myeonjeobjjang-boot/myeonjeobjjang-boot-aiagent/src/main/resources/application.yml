@@ -3,7 +3,7 @@ logging:
     root: debug
 spring:
   config:
-    import: 'classpath:application-infra-ai.yml'
+    import: 'classpath:application-integration.yml'
   ai:
     openai:
       api-key: ${OPENAI_APIKEY}

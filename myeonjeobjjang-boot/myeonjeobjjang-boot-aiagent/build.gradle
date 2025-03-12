@@ -2,6 +2,7 @@ dependencies {
     implementation 'org.springframework.boot:spring-boot-starter-web'
     testImplementation "org.springframework.boot:spring-boot-starter-test"
     implementation 'org.springframework.boot:spring-boot-starter-validation'
-    implementation project(':myeonjeobjjang-infra:myeonjeobjjang-infra-ai')
     implementation 'io.projectreactor:reactor-core'
+    implementation project(':myeonjeobjjang-boot:myeonjeobjjang-boot-advice')
+    implementation project(':myeonjeobjjang-integration')
 }

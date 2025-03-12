@@ -1,5 +1,0 @@
-spring:
-  config:
-    import:
-      - 'classpath:application-infra-client-openai.yml'
-      - 'classpath:application-domain-chat-rdb.yml'

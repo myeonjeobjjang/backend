@@ -34,8 +34,8 @@ public class SecurityConfig {
                     "/api/members/sign-up"
                 ).permitAll()
                 .requestMatchers("/api/members/deny").denyAll()
-                .requestMatchers("/api/company", "/api/company/**").hasAnyAuthority("company", "admin")
-                .requestMatchers("/api/admin", "/api/admin/**").hasAnyAuthority("admin")
+                .requestMatchers("/api/company", "/api/company/**").hasAnyRole("COMPANY", "ADMIN")
+                .requestMatchers("/api/admin", "/api/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("**").authenticated()
             );
         return http.build();

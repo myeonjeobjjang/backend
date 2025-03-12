@@ -10,7 +10,7 @@ import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/admin/industry")
+@RequestMapping("/api/admin/industries")
 @RequiredArgsConstructor
 public class IndustryController {
     private final IndustryService industryService;

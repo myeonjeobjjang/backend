@@ -1,0 +1,22 @@
+spring:
+  datasource:
+    url: jdbc:h2:mem:testdb;MODE=PostgreSQL
+    driver-class-name: org.h2.Driver
+  jpa:
+    show-sql: true
+    database: h2
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  ai:
+    openai:
+      api-key: ${OPENAI_APIKEY}
+
+jwt:
+  issuer: myeonjeobjjang
+  refresh_jwt_secret: helloworldshouldsecretkeysizemorebigger?moremoremoremorebiggerwhatsgoingoninthisplacerefresh
+  access_jwt_secret: helloworldshouldsecretkeysizemorebigger?moremoremoremorebiggerwhatsgoingoninthisplaceaccess
+  refresh_expired_time: 86400000
+  access_expired_time: 10800000

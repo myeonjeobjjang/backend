@@ -1,0 +1,33 @@
+spring:
+  datasource:
+    url: jdbc:postgresql://localhost:5472/rag-project-vectordb
+    username: rag-project
+    password: 12341234
+    driver-class-name: org.postgresql.Driver
+  jpa:
+    show-sql: false
+    database: postgresql
+    hibernate:
+      ddl-auto: update
+    properties:
+      hibernate:
+        format_sql: true
+  ai:
+    openai:
+      api-key: ${OPENAI_APIKEY}
+      embedding:
+        options:
+          model: text-embedding-3-small
+    vectorstore:
+      pgvector:
+        index-type: hnsw
+        distance-type: cosine_distance
+        dimensions: 1536
+        initialize-schema: true
+        schema-validation: true
+jwt:
+  issuer: myeonjeobjjang
+  refresh_jwt_secret: helloworldshouldsecretkeysizemorebigger?moremoremoremorebiggerwhatsgoingoninthisplacerefresh
+  access_jwt_secret: helloworldshouldsecretkeysizemorebigger?moremoremoremorebiggerwhatsgoingoninthisplaceaccess
+  refresh_expired_time: 86400000
+  access_expired_time: 10800000

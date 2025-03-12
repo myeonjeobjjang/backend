@@ -1,8 +1,0 @@
-dependencies {
-    implementation 'org.springframework.boot:spring-boot-starter'
-    testImplementation "org.springframework.boot:spring-boot-starter-test"
-    implementation "org.springframework.ai:spring-ai-core:${springAiVersion}"
-    implementation project(':myeonjeobjjang-infra:myeonjeobjjang-infra-client-llm')
-    implementation project(':myeonjeobjjang-infra:myeonjeobjjang-infra-client-ocr')
-    implementation project(':myeonjeobjjang-domain:myeonjeobjjang-domain-core-vectordb')
-}

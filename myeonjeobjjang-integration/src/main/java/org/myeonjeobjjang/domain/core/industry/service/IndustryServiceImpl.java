@@ -17,7 +17,7 @@ public class IndustryServiceImpl implements IndustryService {
     private final IndustryRepository industryRepository;
 
     public IntegrationIndustryResponse.IntegrationIndustryInfoResponse save(IntegrationIndustryRequest.IntegrationIndustryCreateRequest request) {
-        if(industryRepository.findIndustryByIndustryName(request.industryName()).isPresent())
+        if (industryRepository.findIndustryByIndustryName(request.industryName()).isPresent())
             throw new BaseException(DUPLICATED_INDUSTRY_NAME);
         Industry newIndustry = Industry.builder()
             .industryName(request.industryName())
@@ -31,5 +31,10 @@ public class IndustryServiceImpl implements IndustryService {
         Industry industry = industryRepository.findById(industryId)
             .orElseThrow(() -> new BaseException(INDUSTRY_NOT_FOUND));
         return new IntegrationIndustryResponse.IntegrationIndustryInfoResponse(industry.getIndustryId(), industry.getIndustryName(), industry.getIndustryInformation());
+    }
+
+    public Industry findById(Long industryId) {
+        return industryRepository.findById(industryId)
+            .orElseThrow(() -> new BaseException(INDUSTRY_NOT_FOUND));
     }
 }

@@ -56,4 +56,10 @@ public class CompanyServiceImpl implements CompanyService {
             projection.getIndustryId())
         ).toList(), companyInfoProjectionPage.getPageable(), companyInfoProjectionPage.getTotalElements());
     }
+
+    @Override
+    public Company findById(Long companyId) {
+        return companyRepository.findById(companyId)
+            .orElseThrow(() -> new BaseException(COMPANY_NOT_FOUND));
+    }
 }

@@ -1,5 +1,6 @@
 package org.myeonjeobjjang.domain.core.company.service;
 
+import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyRequest;
 import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyResponse;
 import org.springframework.data.domain.Page;
@@ -11,4 +12,6 @@ public interface CompanyService {
     IntegrationCompanyResponse.IntegrationCompanyInfoResponse get(Long companyId);
 
     Page<IntegrationCompanyResponse.IntegrationCompanyInfoResponse> getCompanyByIndustryId(Long industryId, Pageable pageable);
+
+    Company findById(Long companyId);
 }

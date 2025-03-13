@@ -9,7 +9,7 @@ import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.*;
 
 @RestController
-@RequestMapping("/api/company/companies")
+@RequestMapping("/api/applicant/companies")
 @RequiredArgsConstructor
 public class CompanyApplicantController {
     private final CompanyService companyService;

@@ -1,7 +1,6 @@
 rootProject.name = 'myeonjeobjjang'
 
 include ':myeonjeobjjang-boot:myeonjeobjjang-boot-advice'
-include ':myeonjeobjjang-boot:myeonjeobjjang-boot-api'
 include ':myeonjeobjjang-boot:myeonjeobjjang-boot-aiagent'
 
 include ':myeonjeobjjang-integration'

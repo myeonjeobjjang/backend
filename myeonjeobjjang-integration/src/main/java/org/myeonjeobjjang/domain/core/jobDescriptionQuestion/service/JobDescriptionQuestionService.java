@@ -1,5 +1,6 @@
 package org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service;
 
+import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionRequest;
 import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionResponse;
 
@@ -9,4 +10,5 @@ public interface JobDescriptionQuestionService {
     IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse create(IntegrationJobDescriptionQuestionRequest.IntegrationJobDescriptionQuestionCreateRequest request);
     IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse get(Long jobDescriptionId);
     List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescriptionId(Long jobDescriptionId);
+    List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescription(JobDescription jobDescription);
 }

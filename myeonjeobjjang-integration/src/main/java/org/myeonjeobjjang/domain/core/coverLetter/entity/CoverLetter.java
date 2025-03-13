@@ -6,8 +6,8 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.myeonjeobjjang.domain.common.BaseEntity;
+import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
-import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 
 @Entity
 @Getter
@@ -15,15 +15,15 @@ import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 public class CoverLetter extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long applicationId;
+    private Long coverLetterId;
     @ManyToOne(fetch = FetchType.LAZY)
-    private JobPosting jobPosting;
+    private JobDescription jobDescription;
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
 
     @Builder
-    private CoverLetter(JobPosting recruitment, Member member) {
-        this.jobPosting = recruitment;
+    private CoverLetter(JobDescription jobDescription, Member member) {
+        this.jobDescription = jobDescription;
         this.member = member;
     }
 }

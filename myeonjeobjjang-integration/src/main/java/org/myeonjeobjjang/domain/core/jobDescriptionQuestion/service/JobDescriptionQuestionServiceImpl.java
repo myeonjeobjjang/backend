@@ -53,7 +53,12 @@ public class JobDescriptionQuestionServiceImpl implements JobDescriptionQuestion
     @Override
     public List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescriptionId(Long jobDescriptionId) {
         JobDescription jd = jobDescriptionService.findById(jobDescriptionId);
-        List<JobDescriptionQuestion> jdql = jobDescriptionQuestionRepository.findByJobDescription(jd, Sort.by("questionNumber").ascending());
+        return findByJobDescription(jd);
+    }
+
+    @Override
+    public List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescription(JobDescription jobDescription) {
+        List<JobDescriptionQuestion> jdql = jobDescriptionQuestionRepository.findByJobDescription(jobDescription, Sort.by("questionNumber").ascending());
         return jdql.stream().map(jdq ->
                 new IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse(
                     jdq.getQuestionNumber(),

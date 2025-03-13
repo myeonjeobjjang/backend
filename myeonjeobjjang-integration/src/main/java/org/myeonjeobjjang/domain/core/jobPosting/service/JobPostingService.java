@@ -1,5 +1,6 @@
 package org.myeonjeobjjang.domain.core.jobPosting.service;
 
+import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 import org.myeonjeobjjang.domain.core.jobPosting.service.dto.IntegrationJobPostingRequest;
 import org.myeonjeobjjang.domain.core.jobPosting.service.dto.IntegrationJobPostingResponse;
 
@@ -10,4 +11,5 @@ public interface JobPostingService {
     IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse create(IntegrationJobPostingRequest.IntegrationJobPostingCreateRequest request, LocalDateTime currentDateTime);
     IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse get(Long jobPostingId);
     List<IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse> findByCompanyId(Long companyId, LocalDateTime currentDateTime);
+    JobPosting findById(Long jobPostingId);
 }

@@ -75,4 +75,10 @@ public class JobPostingServiceImpl implements JobPostingService {
                 jobPosting.getCreatedAt()
             )).toList();
     }
+
+    @Override
+    public JobPosting findById(Long jobPostingId) {
+        return jobPostingRepository.findById(jobPostingId)
+            .orElseThrow(() -> new BaseException(JOB_POSTING_NOT_FOUND));
+    }
 }

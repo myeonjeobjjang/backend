@@ -30,10 +30,11 @@ public class SecurityConfig {
             .httpBasic(HttpBasicConfigurer::disable)
             .authorizeHttpRequests(authorizeHttpRequests -> authorizeHttpRequests
                 .requestMatchers(
-                    "/api/members/login",
-                    "/api/members/sign-up"
+                    "/api/visitor/members/login",
+                    "/api/visitor/members/sign-up"
                 ).permitAll()
-                .requestMatchers("/api/members/deny").denyAll()
+                .requestMatchers("/api/company", "/api/company/**").hasAnyRole("COMPANY", "ADMIN")
+                .requestMatchers("/api/admin", "/api/admin/**").hasAnyRole("ADMIN")
                 .requestMatchers("**").authenticated()
             );
         return http.build();

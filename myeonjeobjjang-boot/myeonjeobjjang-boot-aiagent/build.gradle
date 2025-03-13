@@ -6,4 +6,5 @@ dependencies {
     implementation project(':myeonjeobjjang-boot:myeonjeobjjang-boot-advice')
     implementation project(':myeonjeobjjang-integration')
     implementation 'org.springframework.security:spring-security-core'
+    implementation 'org.springframework.data:spring-data-commons'
 }

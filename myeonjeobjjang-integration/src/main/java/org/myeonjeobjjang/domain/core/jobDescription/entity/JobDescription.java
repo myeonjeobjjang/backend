@@ -19,13 +19,13 @@ public class JobDescription extends BaseEntity {
     @Column(columnDefinition = "TEXT")
     private String description;
     @ManyToOne(fetch = FetchType.LAZY)
-    private JobPosting recruitment;
+    private JobPosting jobPosting;
 
     @Builder
-    private JobDescription(String jobName, String description, JobPosting recruitment) {
+    private JobDescription(String jobName, String description, JobPosting jobPosting) {
         this.jobName = jobName;
         this.description = description;
-        this.recruitment = recruitment;
+        this.jobPosting = jobPosting;
     }
 }
 

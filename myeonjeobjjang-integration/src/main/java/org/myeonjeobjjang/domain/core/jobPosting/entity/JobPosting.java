@@ -16,7 +16,7 @@ import java.time.LocalDateTime;
 public class JobPosting extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long recruitmentId;
+    private Long jobPostingId;
     @ManyToOne(fetch = FetchType.LAZY)
     private Company company;
     private String jobPostingName;

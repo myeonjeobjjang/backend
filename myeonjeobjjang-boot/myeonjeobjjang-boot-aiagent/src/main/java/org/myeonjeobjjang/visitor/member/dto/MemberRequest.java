@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.member.dto;
+package org.myeonjeobjjang.visitor.member.dto;
 
 import jakarta.validation.constraints.Email;
 import jakarta.validation.constraints.NotEmpty;

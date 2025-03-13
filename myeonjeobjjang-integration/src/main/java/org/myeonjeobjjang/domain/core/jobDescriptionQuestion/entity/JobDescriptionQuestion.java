@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.domain.core.jobCoverLetterQuestion.entity;
+package org.myeonjeobjjang.domain.core.jobDescriptionQuestion.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
@@ -11,19 +11,21 @@ import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 @Entity
 @Getter
 @NoArgsConstructor(access = AccessLevel.PROTECTED)
-public class JobCoverLetterQuestion extends BaseEntity {
+public class JobDescriptionQuestion extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long recruitmentQuestionId;
+    private Long jobDescriptionQuestionId;
+    @Column(nullable = false)
+    private Long questionNumber;
     @Column(columnDefinition = "TEXT")
     private String question;
     @ManyToOne(fetch = FetchType.LAZY)
     private JobDescription jobDescription;
 
     @Builder
-    private JobCoverLetterQuestion(String question, JobDescription jobDescription) {
+    private JobDescriptionQuestion(Long questionNumber,String question, JobDescription jobDescription) {
+        this.questionNumber = questionNumber;
         this.question = question;
         this.jobDescription = jobDescription;
     }
 }
-

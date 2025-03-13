@@ -24,6 +24,6 @@ public class Member extends BaseEntity {
     private Member(String userName, String email) {
         this.userName = userName;
         this.email = email;
-        this.role = Role.MEMBER;
+        this.role = Role.APPLICANT;
     }
 }

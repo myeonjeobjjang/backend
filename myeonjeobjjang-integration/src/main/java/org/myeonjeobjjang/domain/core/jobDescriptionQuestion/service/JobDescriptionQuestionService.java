@@ -1,0 +1,12 @@
+package org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service;
+
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionRequest;
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionResponse;
+
+import java.util.List;
+
+public interface JobDescriptionQuestionService {
+    IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse create(IntegrationJobDescriptionQuestionRequest.IntegrationJobDescriptionQuestionCreateRequest request);
+    IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse get(Long jobDescriptionId);
+    List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescriptionId(Long jobDescriptionId);
+}

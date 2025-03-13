@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.util.List;
 
 import static org.myeonjeobjjang.domain.core.jobDescription.JobDescriptionErrorCode.DUPLICATE_JOB_DESCRIPTION;
+import static org.myeonjeobjjang.domain.core.jobDescription.JobDescriptionErrorCode.JOB_DESCRIPTION_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -42,5 +43,11 @@ public class JobDescriptionServiceImpl implements JobDescriptionService {
         return jobDescriptions.stream().map(jd ->
             new IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse(jd.getJobDescriptionId(), jd.getJobName(), jd.getDescription(), jd.getJobPosting().getJobPostingId()))
             .toList();
+    }
+
+    @Override
+    public JobDescription findById(Long jobDescriptionId) {
+        return jobDescriptionRepository.findById(jobDescriptionId)
+            .orElseThrow(() -> new BaseException(JOB_DESCRIPTION_NOT_FOUND));
     }
 }

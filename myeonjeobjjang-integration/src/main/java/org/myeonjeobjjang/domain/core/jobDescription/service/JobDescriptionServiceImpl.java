@@ -3,8 +3,10 @@ package org.myeonjeobjjang.domain.core.jobDescription.service;
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 import org.myeonjeobjjang.domain.core.jobDescription.repository.JobDescriptionRepository;
-import org.myeonjeobjjang.domain.core.jobDescription.service.dto.IntegrationJobDescriptionRequest;
-import org.myeonjeobjjang.domain.core.jobDescription.service.dto.IntegrationJobDescriptionResponse;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionRequest;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionRequest.JobDescriptionCreateRequest;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionResponse;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionResponse.JobDescriptionInfoResponse;
 import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 import org.myeonjeobjjang.domain.core.jobPosting.service.JobPostingService;
 import org.myeonjeobjjang.exception.BaseException;
@@ -23,26 +25,21 @@ public class JobDescriptionServiceImpl implements JobDescriptionService {
     private final JobPostingService jobPostingService;
 
     @Override
-    public IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse create(IntegrationJobDescriptionRequest.IntegrationJobDescriptionCreateRequest request) {
+    public JobDescriptionInfoResponse create(JobDescriptionCreateRequest request) {
         JobPosting jobPosting = jobPostingService.findById(request.jobPostingId());
         if(jobDescriptionRepository.findJobDescriptionByJobPostingAndJobName(jobPosting, request.jobName()).isPresent())
             throw new BaseException(DUPLICATE_JOB_DESCRIPTION);
-        JobDescription newJobDescription = JobDescription.builder()
-            .jobName(request.jobName())
-            .description(request.description())
-            .jobPosting(jobPosting)
-            .build();
+        JobDescription newJobDescription = request.toEntity(jobPosting);
         JobDescription savedJobDescription = jobDescriptionRepository.save(newJobDescription);
-        return new IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse(savedJobDescription.getJobDescriptionId(), savedJobDescription.getJobName(), savedJobDescription.getDescription(), savedJobDescription.getJobPosting().getJobPostingId());
+        return JobDescriptionInfoResponse.toDto(savedJobDescription);
     }
 
     @Override
-    public List<IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse> getJobDescriptionByJobPosting(Long jobPostingId) {
+    public List<JobDescriptionInfoResponse> getJobDescriptionByJobPosting(Long jobPostingId) {
         JobPosting jobPosting = jobPostingService.findById(jobPostingId);
-        List<JobDescription> jobDescriptions = jobDescriptionRepository.findJobDescriptionsByJobPosting(jobPosting);
-        return jobDescriptions.stream().map(jd ->
-            new IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse(jd.getJobDescriptionId(), jd.getJobName(), jd.getDescription(), jd.getJobPosting().getJobPostingId()))
-            .toList();
+        List<JobDescription> jobDescriptions = jobDescriptionRepository
+            .findJobDescriptionsByJobPosting(jobPosting);
+        return jobDescriptions.stream().map(JobDescriptionInfoResponse::toDto).toList();
     }
 
     @Override

@@ -2,6 +2,7 @@ package org.myeonjeobjjang.domain.core.company.repository;
 
 import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection;
+import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection.CompanyInfoProjection;
 import org.myeonjeobjjang.domain.core.industry.entity.Industry;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.Pageable;
@@ -22,5 +23,5 @@ public interface CompanyRepository extends JpaRepository<Company, Long> {
         from Company c
         where c.industry = :industry
         """)
-    Page<CompanyProjection.CompanyInfoProjection> findAllCompaniesByIndustry(Industry industry, Pageable pageable);
+    Page<CompanyInfoProjection> findAllCompaniesByIndustry(Industry industry, Pageable pageable);
 }

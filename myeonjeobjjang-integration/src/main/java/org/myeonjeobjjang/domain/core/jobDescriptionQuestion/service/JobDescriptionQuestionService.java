@@ -1,14 +1,17 @@
 package org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service;
 
 import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
-import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionRequest;
-import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionResponse;
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.JobDescriptionQuestionRequest.JobDescriptionQuestionCreateRequest;
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.JobDescriptionQuestionResponse.JobDescriptionQuestionInfoResponse;
 
 import java.util.List;
 
 public interface JobDescriptionQuestionService {
-    IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse create(IntegrationJobDescriptionQuestionRequest.IntegrationJobDescriptionQuestionCreateRequest request);
-    IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse get(Long jobDescriptionId);
-    List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescriptionId(Long jobDescriptionId);
-    List<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> findByJobDescription(JobDescription jobDescription);
+    JobDescriptionQuestionInfoResponse create(JobDescriptionQuestionCreateRequest request);
+
+    JobDescriptionQuestionInfoResponse get(Long jobDescriptionId);
+
+    List<JobDescriptionQuestionInfoResponse> findByJobDescriptionId(Long jobDescriptionId);
+
+    List<JobDescriptionQuestionInfoResponse> findByJobDescription(JobDescription jobDescription);
 }

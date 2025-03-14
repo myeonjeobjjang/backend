@@ -1,9 +1,11 @@
 package org.myeonjeobjjang.domain.core.member.service;
 
-import org.myeonjeobjjang.domain.core.member.service.dto.IntegrationMemberRequest;
-import org.myeonjeobjjang.domain.core.member.service.dto.IntegrationMemberResponse;
+import org.myeonjeobjjang.domain.core.member.service.dto.MemberRequest.LoginRequest;
+import org.myeonjeobjjang.domain.core.member.service.dto.MemberRequest.SignUpRequest;
+import org.myeonjeobjjang.domain.core.member.service.dto.MemberResponse.LoginOrSignUpResponse;
 
 public interface MemberService {
-    IntegrationMemberResponse.LoginOrSignUpResponse login(IntegrationMemberRequest.IntegrationLoginRequest request);
-    IntegrationMemberResponse.LoginOrSignUpResponse signUp(IntegrationMemberRequest.IntegrationSignUpRequest request);
+    LoginOrSignUpResponse login(LoginRequest request);
+
+    LoginOrSignUpResponse signUp(SignUpRequest request);
 }

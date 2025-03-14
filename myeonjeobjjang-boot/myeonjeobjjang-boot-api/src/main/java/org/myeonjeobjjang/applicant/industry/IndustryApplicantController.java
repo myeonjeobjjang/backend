@@ -2,7 +2,7 @@ package org.myeonjeobjjang.applicant.industry;
 
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.industry.service.IndustryService;
-import org.myeonjeobjjang.domain.core.industry.service.dto.IntegrationIndustryResponse;
+import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryResponse.IndustryInfoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.web.bind.annotation.GetMapping;
 import org.springframework.web.bind.annotation.PathVariable;
@@ -16,7 +16,7 @@ public class IndustryApplicantController {
     private final IndustryService industryService;
 
     @GetMapping("/{industryId}")
-    public ResponseEntity<IntegrationIndustryResponse.IntegrationIndustryInfoResponse> getIndustry(@PathVariable Long industryId) {
+    public ResponseEntity<IndustryInfoResponse> getIndustry(@PathVariable Long industryId) {
         return ResponseEntity.ok(industryService.get(industryId));
     }
 }

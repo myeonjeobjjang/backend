@@ -1,11 +1,10 @@
 package org.myeonjeobjjang.company.compnay;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.myeonjeobjjang.company.compnay.dto.CompanyCompanyRequest.CreateCompanyRequest;
 import org.myeonjeobjjang.domain.core.company.service.CompanyService;
-import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyRequest;
-import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyResponse;
+import org.myeonjeobjjang.domain.core.company.service.dto.CompanyResponse;
+import org.myeonjeobjjang.domain.core.company.service.dto.CompanyRequest;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,18 +18,8 @@ import org.springframework.web.bind.annotation.RestController;
 public class CompanyCompanyController {
     private final CompanyService companyService;
 
-    public record CreateCompanyRequest(
-        @NotEmpty
-        String companyName,
-        @NotEmpty
-        String companyInformation,
-        @Positive
-        Long industryId
-    ) {
-    }
-
     @PostMapping
-    public ResponseEntity<IntegrationCompanyResponse.IntegrationCompanyInfoResponse> createCompany(@RequestBody @Validated CreateCompanyRequest request) {
-        return ResponseEntity.ok(companyService.create(new IntegrationCompanyRequest.IntegrationCompanyCreateRequest(request.companyName(), request.companyInformation(), request.industryId())));
+    public ResponseEntity<CompanyResponse.CompanyInfoResponse> createCompany(@RequestBody @Validated CreateCompanyRequest request) {
+        return ResponseEntity.ok(companyService.create(new CompanyRequest.CompanyCreateRequest(request.companyName(), request.companyInformation(), request.industryId())));
     }
 }

@@ -1,12 +1,12 @@
 package org.myeonjeobjjang.applicant.resume;
 
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.applicant.resume.dto.ResumeApplicationRequest.ResumeCreateRequest;
-import org.myeonjeobjjang.applicant.resume.dto.ResumeApplicationRequest.ResumeInfoRequest;
+import org.myeonjeobjjang.applicant.resume.dto.ResumeApplicationApplicantRequest.ResumeCreateApplicantRequest;
+import org.myeonjeobjjang.applicant.resume.dto.ResumeApplicationApplicantRequest.ResumeInfoApplicantRequest;
 import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.resume.service.ResumeService;
-import org.myeonjeobjjang.domain.core.resume.service.dto.IntegrationResumeResponse.IntegrationResumeInfoResponse;
+import org.myeonjeobjjang.domain.core.resume.service.dto.ResumeResponse.ResumeInfoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.*;
@@ -18,26 +18,26 @@ public class ResumeApplicantController {
     private final ResumeService resumeService;
 
     @PostMapping
-    public ResponseEntity<IntegrationResumeInfoResponse> create(
+    public ResponseEntity<ResumeInfoResponse> create(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
-        @RequestBody ResumeCreateRequest request
+        @RequestBody ResumeCreateApplicantRequest request
     ) {
         Member member = principalDetails.getMember();
-        return ResponseEntity.ok(resumeService.create(request.toIntegrationRequest(member)));
+        return ResponseEntity.ok(resumeService.create(request.toServiceRequest(member)));
     }
 
     @PatchMapping("/{resumeId}")
-    public ResponseEntity<IntegrationResumeInfoResponse> update(
+    public ResponseEntity<ResumeInfoResponse> update(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
         @PathVariable Long resumeId,
-        @RequestBody ResumeInfoRequest request
+        @RequestBody ResumeInfoApplicantRequest request
     ) {
         Member member = principalDetails.getMember();
-        return ResponseEntity.ok(resumeService.update(request.toIntegrationRequest(resumeId, member)));
+        return ResponseEntity.ok(resumeService.update(request.toServiceRequest(resumeId, member)));
     }
 
     @GetMapping("/{resumeId}")
-    public ResponseEntity<IntegrationResumeInfoResponse> get(@PathVariable Long resumeId) {
+    public ResponseEntity<ResumeInfoResponse> get(@PathVariable Long resumeId) {
         return ResponseEntity.ok(resumeService.get(resumeId));
     }
 }

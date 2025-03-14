@@ -1,11 +1,11 @@
 package org.myeonjeobjjang.domain.core.resume.service;
 
-import org.myeonjeobjjang.domain.core.resume.service.dto.IntegrationResumeRequest.IntegrationResumeCreateRequest;
-import org.myeonjeobjjang.domain.core.resume.service.dto.IntegrationResumeRequest.IntegrationResumeInfoRequest;
-import org.myeonjeobjjang.domain.core.resume.service.dto.IntegrationResumeResponse.IntegrationResumeInfoResponse;
+import org.myeonjeobjjang.domain.core.resume.service.dto.ResumeRequest.ResumeCreateRequest;
+import org.myeonjeobjjang.domain.core.resume.service.dto.ResumeRequest.ResumeInfoRequest;
+import org.myeonjeobjjang.domain.core.resume.service.dto.ResumeResponse.ResumeInfoResponse;
 
 public interface ResumeService {
-    IntegrationResumeInfoResponse create(IntegrationResumeCreateRequest request);
-    IntegrationResumeInfoResponse update(IntegrationResumeInfoRequest request);
-    IntegrationResumeInfoResponse get(Long resumeId);
+    ResumeInfoResponse create(ResumeCreateRequest request);
+    ResumeInfoResponse update(ResumeInfoRequest request);
+    ResumeInfoResponse get(Long resumeId);
 }

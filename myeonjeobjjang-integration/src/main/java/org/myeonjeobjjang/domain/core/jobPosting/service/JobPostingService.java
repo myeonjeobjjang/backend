@@ -1,15 +1,18 @@
 package org.myeonjeobjjang.domain.core.jobPosting.service;
 
 import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
-import org.myeonjeobjjang.domain.core.jobPosting.service.dto.IntegrationJobPostingRequest;
-import org.myeonjeobjjang.domain.core.jobPosting.service.dto.IntegrationJobPostingResponse;
+import org.myeonjeobjjang.domain.core.jobPosting.service.dto.JobPostingRequest.JobPostingCreateRequest;
+import org.myeonjeobjjang.domain.core.jobPosting.service.dto.JobPostingResponse.JobPostingInfoResponse;
 
 import java.time.LocalDateTime;
 import java.util.List;
 
 public interface JobPostingService {
-    IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse create(IntegrationJobPostingRequest.IntegrationJobPostingCreateRequest request, LocalDateTime currentDateTime);
-    IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse get(Long jobPostingId);
-    List<IntegrationJobPostingResponse.IntegrationJobPostingInfoResponse> findByCompanyId(Long companyId, LocalDateTime currentDateTime);
+    JobPostingInfoResponse create(JobPostingCreateRequest request, LocalDateTime currentDateTime);
+
+    JobPostingInfoResponse get(Long jobPostingId);
+
+    List<JobPostingInfoResponse> findByCompanyId(Long companyId, LocalDateTime currentDateTime);
+
     JobPosting findById(Long jobPostingId);
 }

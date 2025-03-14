@@ -7,7 +7,7 @@ import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.myeonjeobjjang.domain.common.BaseEntity;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
-import org.myeonjeobjjang.domain.core.resume.service.dto.IntegrationResumeRequest.IntegrationResumeInfoRequest;
+import org.myeonjeobjjang.domain.core.resume.service.dto.ResumeRequest.ResumeInfoRequest;
 
 @Entity
 @Getter
@@ -46,7 +46,7 @@ public class Resume extends BaseEntity {
         this.member = member;
     }
 
-    public void update(IntegrationResumeInfoRequest request) {
+    public void update(ResumeInfoRequest request) {
         if (request.price() != null && !request.price().isEmpty())
             this.price = request.price();
         if (request.certificate() != null && !request.certificate().isEmpty())

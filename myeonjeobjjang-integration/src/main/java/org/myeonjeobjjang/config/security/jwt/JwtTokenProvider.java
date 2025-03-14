@@ -20,7 +20,7 @@ import javax.crypto.spec.SecretKeySpec;
 import java.nio.charset.StandardCharsets;
 import java.util.Date;
 
-import static org.myeonjeobjjang.common.errorCode.SecurityErrorCode.*;
+import static org.myeonjeobjjang.config.security.SecurityErrorCode.*;
 
 @Component
 @RequiredArgsConstructor

@@ -3,9 +3,9 @@ package org.myeonjeobjjang.domain.core.company.service;
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.company.repository.CompanyRepository;
-import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection;
-import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyRequest;
-import org.myeonjeobjjang.domain.core.company.service.dto.IntegrationCompanyResponse;
+import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection.CompanyInfoProjection;
+import org.myeonjeobjjang.domain.core.company.service.dto.CompanyRequest.CompanyCreateRequest;
+import org.myeonjeobjjang.domain.core.company.service.dto.CompanyResponse.CompanyInfoResponse;
 import org.myeonjeobjjang.domain.core.industry.entity.Industry;
 import org.myeonjeobjjang.domain.core.industry.service.IndustryService;
 import org.myeonjeobjjang.exception.BaseException;
@@ -24,37 +24,29 @@ public class CompanyServiceImpl implements CompanyService {
 
     private final IndustryService industryService;
 
-    public IntegrationCompanyResponse.IntegrationCompanyInfoResponse create(IntegrationCompanyRequest.IntegrationCompanyCreateRequest request) {
+    public CompanyInfoResponse create(CompanyCreateRequest request) {
         if (companyRepository.findCompanyByCompanyName(request.companyName()).isPresent())
             throw new BaseException(DUPLICATED_COMPANY_NAME);
         Industry industry = industryService.findById(request.industryId());
-        Company newCompany = Company.builder()
-            .companyName(request.companyName())
-            .companyInformation(request.companyInformation())
-            .industry(industry)
-            .build();
+        Company newCompany = request.toEntity(industry);
         Company savedCompany = companyRepository.save(newCompany);
-        return new IntegrationCompanyResponse.IntegrationCompanyInfoResponse(savedCompany.getCompanyId(), savedCompany.getCompanyName(), savedCompany.getCompanyInformation(), savedCompany.getIndustry().getIndustryId());
+        return CompanyInfoResponse.toDto(savedCompany);
     }
 
-    public IntegrationCompanyResponse.IntegrationCompanyInfoResponse get(Long companyId) {
+    public CompanyInfoResponse get(Long companyId) {
         Company company = companyRepository.findById(companyId)
             .orElseThrow(() -> new BaseException(COMPANY_NOT_FOUND));
-        return new IntegrationCompanyResponse.IntegrationCompanyInfoResponse(company.getCompanyId(), company.getCompanyName(), company.getCompanyInformation(), company.getIndustry().getIndustryId());
+        return CompanyInfoResponse.toDto(company);
     }
 
     @Override
-    public Page<IntegrationCompanyResponse.IntegrationCompanyInfoResponse> getCompanyByIndustryId(Long industryId, Pageable pageable) {
+    public Page<CompanyInfoResponse> getCompanyByIndustryId(Long industryId, Pageable pageable) {
         Industry industry = industryService.findById(industryId);
-        Page<CompanyProjection.CompanyInfoProjection> companyInfoProjectionPage = companyRepository.findAllCompaniesByIndustry(industry, pageable);
+        Page<CompanyInfoProjection> companyInfoProjectionPage = companyRepository.findAllCompaniesByIndustry(industry, pageable);
 
-        return new PageImpl<>(companyInfoProjectionPage.getContent().stream().map(projection
-            -> new IntegrationCompanyResponse.IntegrationCompanyInfoResponse(
-            projection.getCompanyId(),
-            projection.getCompanyName(),
-            projection.getCompanyInformation(),
-            projection.getIndustryId())
-        ).toList(), companyInfoProjectionPage.getPageable(), companyInfoProjectionPage.getTotalElements());
+        return new PageImpl<>(companyInfoProjectionPage.getContent().stream()
+            .map(CompanyInfoResponse::toDto).toList(),
+            companyInfoProjectionPage.getPageable(), companyInfoProjectionPage.getTotalElements());
     }
 
     @Override

@@ -7,7 +7,7 @@ import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.core.userdetails.UsernameNotFoundException;
 import org.springframework.stereotype.Component;
 
-import static org.myeonjeobjjang.common.errorCode.MemberErrorCode.MEMBER_NOT_FOUND;
+import static org.myeonjeobjjang.domain.core.member.MemberErrorCode.MEMBER_NOT_FOUND;
 
 @Component
 @RequiredArgsConstructor

@@ -1,11 +1,10 @@
 package org.myeonjeobjjang.company.jobDescription;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.myeonjeobjjang.company.jobDescription.dto.JobDescriptionCompanyRequest.JobDescriptionCreateCompanyRequest;
 import org.myeonjeobjjang.domain.core.jobDescription.service.JobDescriptionService;
-import org.myeonjeobjjang.domain.core.jobDescription.service.dto.IntegrationJobDescriptionRequest;
-import org.myeonjeobjjang.domain.core.jobDescription.service.dto.IntegrationJobDescriptionResponse;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionRequest.JobDescriptionCreateRequest;
+import org.myeonjeobjjang.domain.core.jobDescription.service.dto.JobDescriptionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,17 +18,12 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobDescriptionCompanyController {
     private final JobDescriptionService jobDescriptionService;
 
-    public record JobDescriptionCreateRequest(
-        @NotEmpty
-        String jobName,
-        @NotEmpty
-        String description,
-        @Positive
-        Long jobPostingId
-    ) {}
-
     @PostMapping
-    public ResponseEntity<IntegrationJobDescriptionResponse.IntegrationJobDescriptionInfoResponse> create(@RequestBody @Validated JobDescriptionCreateRequest request) {
-        return ResponseEntity.ok(jobDescriptionService.create(new IntegrationJobDescriptionRequest.IntegrationJobDescriptionCreateRequest(request.jobName(), request.description(), request.jobPostingId())));
+    public ResponseEntity<JobDescriptionResponse.JobDescriptionInfoResponse> create(
+        @RequestBody @Validated JobDescriptionCreateCompanyRequest request
+    ) {
+        return ResponseEntity.ok(jobDescriptionService.create(
+            new JobDescriptionCreateRequest(request.jobName(), request.description(), request.jobPostingId())
+        ));
     }
 }

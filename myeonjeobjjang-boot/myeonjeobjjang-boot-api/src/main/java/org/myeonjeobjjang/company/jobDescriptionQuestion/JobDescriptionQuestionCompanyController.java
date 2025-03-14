@@ -1,11 +1,10 @@
 package org.myeonjeobjjang.company.jobDescriptionQuestion;
 
-import jakarta.validation.constraints.NotEmpty;
-import jakarta.validation.constraints.Positive;
 import lombok.RequiredArgsConstructor;
+import org.myeonjeobjjang.company.jobDescriptionQuestion.dto.JobDescriptionQuestionCompanyRequest.JobDescriptionQuestionCreateCompanyRequest;
 import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.JobDescriptionQuestionService;
-import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionRequest;
-import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.IntegrationJobDescriptionQuestionResponse;
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.JobDescriptionQuestionRequest.JobDescriptionQuestionCreateRequest;
+import org.myeonjeobjjang.domain.core.jobDescriptionQuestion.service.dto.JobDescriptionQuestionResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
 import org.springframework.web.bind.annotation.PostMapping;
@@ -19,18 +18,11 @@ import org.springframework.web.bind.annotation.RestController;
 public class JobDescriptionQuestionCompanyController {
     private final JobDescriptionQuestionService jobDescriptionQuestionService;
 
-    public record JobDescriptionQuestionCreateRequest(
-        @Positive
-        Long questionNumber,
-        @NotEmpty
-        String question,
-        @Positive
-        Long jobDescriptionId
-    ) {}
-
     @PostMapping
-    public ResponseEntity<IntegrationJobDescriptionQuestionResponse.IntegrationJobDescriptionQuestionInfoResponse> create(@RequestBody @Validated JobDescriptionQuestionCreateRequest request) {
-        return ResponseEntity.ok(jobDescriptionQuestionService.create(new IntegrationJobDescriptionQuestionRequest.IntegrationJobDescriptionQuestionCreateRequest(
+    public ResponseEntity<JobDescriptionQuestionResponse.JobDescriptionQuestionInfoResponse> create(
+        @RequestBody @Validated JobDescriptionQuestionCreateCompanyRequest request
+    ) {
+        return ResponseEntity.ok(jobDescriptionQuestionService.create(new JobDescriptionQuestionCreateRequest(
             request.questionNumber(), request.question(), request.jobDescriptionId()
         )));
     }

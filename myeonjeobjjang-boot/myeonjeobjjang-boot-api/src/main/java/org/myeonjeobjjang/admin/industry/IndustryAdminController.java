@@ -1,13 +1,16 @@
 package org.myeonjeobjjang.admin.industry;
 
-import jakarta.validation.constraints.NotEmpty;
 import lombok.RequiredArgsConstructor;
+import org.myeonjeobjjang.admin.industry.dto.IndustryAdminRequest.CreateIndustryAdminRequest;
 import org.myeonjeobjjang.domain.core.industry.service.IndustryService;
-import org.myeonjeobjjang.domain.core.industry.service.dto.IntegrationIndustryRequest;
-import org.myeonjeobjjang.domain.core.industry.service.dto.IntegrationIndustryResponse;
+import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryRequest.IndustryCreateRequest;
+import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryResponse.IndustryInfoResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.validation.annotation.Validated;
-import org.springframework.web.bind.annotation.*;
+import org.springframework.web.bind.annotation.PostMapping;
+import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RestController;
 
 @RestController
 @RequestMapping("/api/admin/industries")
@@ -15,15 +18,8 @@ import org.springframework.web.bind.annotation.*;
 public class IndustryAdminController {
     private final IndustryService industryService;
 
-    public record CreateIndustryRequest(
-        @NotEmpty
-        String industryName,
-        @NotEmpty
-        String industryInformation
-    ) {}
-
     @PostMapping
-    public ResponseEntity<IntegrationIndustryResponse.IntegrationIndustryInfoResponse> createIndustry(@RequestBody @Validated CreateIndustryRequest request) {
-        return ResponseEntity.ok(industryService.save(new IntegrationIndustryRequest.IntegrationIndustryCreateRequest(request.industryName(), request.industryInformation())));
+    public ResponseEntity<IndustryInfoResponse> createIndustry(@RequestBody @Validated CreateIndustryAdminRequest request) {
+        return ResponseEntity.ok(industryService.save(new IndustryCreateRequest(request.industryName(), request.industryInformation())));
     }
 }

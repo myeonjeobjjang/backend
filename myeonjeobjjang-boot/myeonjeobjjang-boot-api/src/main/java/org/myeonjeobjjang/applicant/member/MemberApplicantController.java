@@ -1,7 +1,7 @@
 package org.myeonjeobjjang.applicant.member;
 
 import lombok.RequiredArgsConstructor;
-import org.myeonjeobjjang.visitor.member.dto.MemberResponse;
+import org.myeonjeobjjang.applicant.member.dto.MemberApplicantResponse.MemberInfoApplicantResponse;
 import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.member.service.MemberService;
@@ -18,8 +18,8 @@ public class MemberApplicantController {
     private final MemberService memberService;
 
     @GetMapping("/who")
-    public ResponseEntity<MemberResponse.MemberInfo> whoIsMe(@AuthenticationPrincipal PrincipalDetails principalDetails) {
+    public ResponseEntity<MemberInfoApplicantResponse> whoIsMe(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         Member member = principalDetails.getMember();
-        return ResponseEntity.ok(new MemberResponse.MemberInfo(member.getMemberId(), member.getUserName(), member.getEmail(), member.getRole()));
+        return ResponseEntity.ok(new MemberInfoApplicantResponse(member.getMemberId(), member.getUserName(), member.getEmail(), member.getRole()));
     }
 }

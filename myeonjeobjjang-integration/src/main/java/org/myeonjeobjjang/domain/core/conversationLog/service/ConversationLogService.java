@@ -1,7 +1,9 @@
 package org.myeonjeobjjang.domain.core.conversationLog.service;
 
 import org.myeonjeobjjang.domain.core.conversationLog.entity.ConversationLog;
+import org.myeonjeobjjang.domain.core.conversationLog.service.dto.ConversationLogResponse.ConversationLogNoOffsetGetResponse;
 
+import java.time.LocalDateTime;
 import java.util.List;
 
 public interface ConversationLogService {
@@ -10,4 +12,6 @@ public interface ConversationLogService {
     List<ConversationLog> get(String conversationId, int lastN);
 
     void clear(String conversationId);
+
+    ConversationLogNoOffsetGetResponse noOffsetGet(String conversationId, LocalDateTime lastConversationCreatedAt, Integer amount);
 }

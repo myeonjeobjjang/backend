@@ -2,9 +2,11 @@ package org.myeonjeobjjang.applicant.conversation;
 
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.applicant.conversation.dto.ConversationApplicantRequest.MockInterviewChatApplicantRequest;
+import org.myeonjeobjjang.applicant.conversation.dto.ConversationApplicantResponse.ConversationLogsApplicantResponse;
 import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.conversation.service.ConversationService;
 import org.myeonjeobjjang.domain.core.conversation.service.dto.ConversationResponse.ConversationCreateResponse;
+import org.myeonjeobjjang.domain.core.conversationLog.service.dto.ConversationLogResponse.ConversationLogNoOffsetGetResponse;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
@@ -35,5 +37,13 @@ public class ConversationApplicantController {
     ) {
         Member member = principalDetails.getMember();
         return conversationService.mockInterviewChat(member, request.userMessage(), conversationId);
+    }
+
+    @PostMapping("/{conversationId}/conversationLogs")
+    public ResponseEntity<ConversationLogNoOffsetGetResponse> noOffsetGetConversationLog(
+        @PathVariable Long conversationId,
+        @RequestBody @Validated ConversationLogsApplicantResponse request
+    ) {
+        return ResponseEntity.ok(conversationService.noOffsetGetConversationLog(conversationId, request.lastConversationCreatedAt(), request.amount()));
     }
 }

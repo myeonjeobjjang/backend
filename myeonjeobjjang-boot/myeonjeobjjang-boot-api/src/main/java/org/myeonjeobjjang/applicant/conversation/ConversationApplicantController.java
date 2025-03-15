@@ -1,16 +1,15 @@
 package org.myeonjeobjjang.applicant.conversation;
 
 import lombok.RequiredArgsConstructor;
+import org.myeonjeobjjang.applicant.conversation.dto.ConversationApplicantRequest.MockInterviewChatApplicantRequest;
 import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.conversation.service.ConversationService;
 import org.myeonjeobjjang.domain.core.conversation.service.dto.ConversationResponse.ConversationCreateResponse;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
-import org.springframework.web.bind.annotation.PathVariable;
-import org.springframework.web.bind.annotation.PostMapping;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RestController;
+import org.springframework.validation.annotation.Validated;
+import org.springframework.web.bind.annotation.*;
 
 @RestController
 @RequestMapping("/api/applicant/conversations")
@@ -26,5 +25,15 @@ public class ConversationApplicantController {
     ) {
         Member member = principalDetails.getMember();
         return ResponseEntity.ok(conversationService.create(member, coverLetterId, resumeId));
+    }
+
+    @PostMapping("/{conversationId}")
+    public String mockInterviewChat(
+        @AuthenticationPrincipal PrincipalDetails principalDetails,
+        @RequestBody @Validated MockInterviewChatApplicantRequest request,
+        @PathVariable Long conversationId
+    ) {
+        Member member = principalDetails.getMember();
+        return conversationService.mockInterviewChat(member, request.userMessage(), conversationId);
     }
 }

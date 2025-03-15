@@ -10,8 +10,12 @@ import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.resume.entity.Resume;
 import org.myeonjeobjjang.domain.core.resume.service.ResumeService;
 import org.myeonjeobjjang.domain.core.vectordb.VectorDBService;
+import org.myeonjeobjjang.exception.BaseException;
 import org.myeonjeobjjang.infra.client.mockInterview.MockInterviewClient;
+import org.myeonjeobjjang.infra.client.mockInterview.dto.MockInterviewClientRequest.MockInterviewChatRequest;
 import org.springframework.stereotype.Service;
+
+import static org.myeonjeobjjang.domain.core.conversation.ConversationErrorCode.CONVERSATION_NOT_FOUND;
 
 @Service
 @RequiredArgsConstructor
@@ -43,5 +47,17 @@ public class ConversationServiceImpl implements ConversationService {
             coverLetterService.embeddingCoverLetter(coverLetterId, savedConversation.getConversationId()),
             vectorDBService.resumeEmbedding(resume, savedConversation.getConversationId())
         );
+    }
+
+    @Override
+    public String mockInterviewChat(Member member, String userMessage, Long conversationId) {
+        Conversation conversation = conversationRepository.findByConversationIdAndMember(conversationId, member)
+            .orElseThrow(() -> new BaseException(CONVERSATION_NOT_FOUND));
+
+        return mockInterviewClient.mockInterviewChat(MockInterviewChatRequest.toDto(
+            userMessage,
+            conversation,
+            MOCK_INTERVIEW_CONVERSATION_PREFIX
+        ));
     }
 }

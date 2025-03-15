@@ -5,4 +5,6 @@ import org.myeonjeobjjang.domain.core.member.entity.Member;
 
 public interface ConversationService {
     ConversationCreateResponse create(Member member, Long coverLetterId, Long resumeId);
+
+    String mockInterviewChat(Member member, String userMessage, Long conversationId);
 }

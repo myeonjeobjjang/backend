@@ -19,7 +19,7 @@ public class ResumeRequest {
             return Resume.builder()
                 .member(member)
                 .introduce(introduce)
-                .major(introduce)
+                .major(major)
                 .grade(grade)
                 .skill(skill)
                 .companyExperience(companyExperience)

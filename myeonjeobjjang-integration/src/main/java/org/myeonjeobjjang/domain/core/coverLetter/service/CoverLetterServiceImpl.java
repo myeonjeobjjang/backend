@@ -3,6 +3,7 @@ package org.myeonjeobjjang.domain.core.coverLetter.service;
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.coverLetter.entity.CoverLetter;
 import org.myeonjeobjjang.domain.core.coverLetter.repository.CoverLetterRepository;
+import org.myeonjeobjjang.domain.core.coverLetter.repository.dto.CoverLetterProjection.CoverLetterInfoForConversationProjection;
 import org.myeonjeobjjang.domain.core.coverLetter.repository.dto.CoverLetterProjection.CoverLetterInfoProjection;
 import org.myeonjeobjjang.domain.core.coverLetter.service.dto.CoverLetterResponse.CoverLetterInfoResponse;
 import org.myeonjeobjjang.domain.core.coverLetterItem.service.CoverLetterItemService;
@@ -11,6 +12,8 @@ import org.myeonjeobjjang.domain.core.coverLetterItem.service.dto.CoverLetterIte
 import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 import org.myeonjeobjjang.domain.core.jobDescription.service.JobDescriptionService;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
+import org.myeonjeobjjang.domain.core.vectordb.VectorDBService;
+import org.myeonjeobjjang.domain.core.vectordb.dto.VectorDBRequest.CoverLetterEmbeddingRequest;
 import org.myeonjeobjjang.exception.BaseException;
 import org.springframework.stereotype.Service;
 
@@ -26,6 +29,7 @@ public class CoverLetterServiceImpl implements CoverLetterService {
 
     private final JobDescriptionService jobDescriptionService;
     private final CoverLetterItemService coverLetterItemService;
+    private final VectorDBService vectorDBService;
 
     @Override
     public CoverLetterInfoResponse createEmpty(Member member) {
@@ -50,8 +54,8 @@ public class CoverLetterServiceImpl implements CoverLetterService {
         CoverLetter savedCoverLetter = coverLetterRepository.save(newCoverLetter);
         List<CoverLetterItemInfoResponse> coverLetterItemInfoResponses = coverLetterItemService
             .copyQuestionFromJobDescription(
-            CoverLetterItemCopyFromJobDescriptionRequest.toDto(savedCoverLetter, jobDescription)
-        );
+                CoverLetterItemCopyFromJobDescriptionRequest.toDto(savedCoverLetter, jobDescription)
+            );
         return CoverLetterInfoResponse.toDto(coverLetterItemInfoResponses, jobDescription);
     }
 
@@ -61,5 +65,20 @@ public class CoverLetterServiceImpl implements CoverLetterService {
         if (coverLetterInfoProjections.isEmpty())
             throw new BaseException(COVER_LETTER_NOT_FOUND);
         return CoverLetterInfoResponse.toDto(coverLetterInfoProjections);
+    }
+
+    @Override
+    public int embeddingCoverLetter(Long coverLetterId, Long conversationId) {
+        List<CoverLetterInfoProjection> coverLetterInfoProjections = coverLetterRepository.findByCoverLetterId(coverLetterId);
+        return vectorDBService.coverLetterEmbedding(
+            coverLetterInfoProjections.stream().map(CoverLetterEmbeddingRequest::toDto).toList(),
+            conversationId
+        );
+    }
+
+    @Override
+    public CoverLetterInfoForConversationProjection findCoverLetterForConversation(Long coverLetterId) {
+        return coverLetterRepository.findCoverLetterForConversation(coverLetterId)
+            .orElseThrow(() -> new BaseException(COVER_LETTER_NOT_FOUND));
     }
 }

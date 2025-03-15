@@ -6,7 +6,6 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.myeonjeobjjang.domain.common.BaseEntity;
-import org.myeonjeobjjang.domain.core.conversation.entity.Conversation;
 
 @Entity
 @Getter
@@ -14,10 +13,9 @@ import org.myeonjeobjjang.domain.core.conversation.entity.Conversation;
 public class ConversationLog extends BaseEntity {
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long conversatoinLogId;
+    private Long conversationLogId;
     @JoinColumn(updatable = false)
-    @ManyToOne
-    private Conversation conversation;
+    private String conversationId;
     @Column(updatable = false, columnDefinition = "TEXT")
     private String data;
     @Column(updatable = false)
@@ -25,8 +23,8 @@ public class ConversationLog extends BaseEntity {
     private ConversationMessageType messageType;
 
     @Builder
-    private ConversationLog(Conversation conversation, String data, ConversationMessageType messageType) {
-        this.conversation = conversation;
+    private ConversationLog(String conversationId, String data, ConversationMessageType messageType) {
+        this.conversationId = conversationId;
         this.data = data;
         this.messageType = messageType;
     }

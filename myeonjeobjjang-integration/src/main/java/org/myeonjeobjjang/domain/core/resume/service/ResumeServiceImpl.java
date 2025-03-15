@@ -44,4 +44,10 @@ public class ResumeServiceImpl implements ResumeService {
             .orElseThrow(() -> new BaseException(RESUME_NOT_FOUND));
         return ResumeInfoResponse.toDto(resume);
     }
+
+    @Override
+    public Resume findById(Long resumeId) {
+        return resumeRepository.findById(resumeId)
+            .orElseThrow(() -> new BaseException(RESUME_NOT_FOUND));
+    }
 }

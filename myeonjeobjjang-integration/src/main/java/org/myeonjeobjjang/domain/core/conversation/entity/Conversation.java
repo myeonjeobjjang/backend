@@ -2,6 +2,7 @@ package org.myeonjeobjjang.domain.core.conversation.entity;
 
 import jakarta.persistence.*;
 import lombok.AccessLevel;
+import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.myeonjeobjjang.domain.common.BaseEntity;
@@ -22,11 +23,28 @@ public class Conversation extends BaseEntity {
     private CoverLetter coverLetter;
     @ManyToOne(fetch = FetchType.LAZY)
     private Resume resume;
+    @Column(columnDefinition = "TEXT")
+    private String industryInfo;
+    @Column(columnDefinition = "TEXT")
+    private String companyInfo;
+    @Column(columnDefinition = "TEXT")
+    private String jobDescriptionInfo;
 
-    public Conversation(Member member, CoverLetter coverLetter, Resume resume) {
+    @Builder
+    private Conversation(
+        Member member,
+        CoverLetter coverLetter,
+        Resume resume,
+        String industryInfo,
+        String companyInfo,
+        String jobDescriptionInfo
+    ) {
         this.member = member;
         this.coverLetter = coverLetter;
         this.resume = resume;
+        this.industryInfo = industryInfo;
+        this.companyInfo = companyInfo;
+        this.jobDescriptionInfo = jobDescriptionInfo;
     }
 }
 

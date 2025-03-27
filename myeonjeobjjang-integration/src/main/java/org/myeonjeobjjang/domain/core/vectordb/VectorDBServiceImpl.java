@@ -4,7 +4,7 @@ import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.resume.entity.Resume;
 import org.myeonjeobjjang.domain.core.vectordb.dto.VectorDBRequest.CoverLetterEmbeddingRequest;
 import org.springframework.ai.document.Document;
-import org.springframework.ai.transformer.splitter.TokenTextSplitter;
+import org.springframework.ai.transformer.splitter.TextSplitter;
 import org.springframework.ai.vectorstore.SearchRequest;
 import org.springframework.ai.vectorstore.VectorStore;
 import org.springframework.ai.vectorstore.filter.FilterExpressionBuilder;
@@ -13,6 +13,7 @@ import org.springframework.stereotype.Service;
 import java.lang.reflect.InvocationTargetException;
 import java.lang.reflect.Method;
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -29,27 +30,28 @@ public class VectorDBServiceImpl implements VectorDBService {
 
     @Override
     public Integer coverLetterEmbedding(List<CoverLetterEmbeddingRequest> coverLetterEmbeddingRequests, Long conversationId) {
-        Map<String, Object> documentMetadata = Map.of("category", "cover_letter", "conversation_id", conversationId);
-        StringBuffer sb = new StringBuffer();
+        Map<String, Object> documentMetadata = new HashMap<>();
+        documentMetadata.put("category", "cover_letter");
+        documentMetadata.put("conversation_id", conversationId);
+
         List<Document> documents = coverLetterEmbeddingRequests.stream()
             .map(cler -> {
-                sb.delete(0, sb.length());
-                sb.append("[Question ").append(cler.questionNumber()).append("] : ").append(cler.question())
-                    .append(" [Answer ").append(cler.questionNumber()).append("] : ").append(cler.answer());
-                return new Document(sb.toString(), documentMetadata);
+                documentMetadata.put("question", cler.question());
+                return new Document(cler.answer(), documentMetadata);
             }).toList();
         List<Document> splitDocuments = documentSplitter(documents);
         vectorStore.accept(splitDocuments);
-        return documents.size();
+        return splitDocuments.size();
     }
 
     @Override
     public Integer resumeEmbedding(Resume resume, Long conversationId) {
-        Map<String, Object> documentMetadata = Map.of("category", "resume", "conversation_id", conversationId);
+        Map<String, Object> documentMetadata = new HashMap<>();
+        documentMetadata.put("category", "resume");
+        documentMetadata.put("conversation_id", conversationId);
 
         Class<Resume> clazz = Resume.class;
         List<Document> documents = new ArrayList<>(8);
-        StringBuffer sb = new StringBuffer();
         for (Method method : clazz.getDeclaredMethods()) {
             if (!method.getName().startsWith("get") || !method.getReturnType().equals(String.class) || method.getParameterCount() > 0)
                 continue;
@@ -62,20 +64,19 @@ public class VectorDBServiceImpl implements VectorDBService {
             String value = (String) fieldObject;
 
             if (!value.isEmpty()) {
-                sb.delete(0, sb.length());
                 String fieldName = method.getName().substring(3);
-                sb.append("[").append(fieldName).append("] : ").append(value);
-                documents.add(new Document(sb.toString(), documentMetadata));
+                documentMetadata.put("data_of", fieldName);
+                documents.add(new Document(value, documentMetadata));
             }
         }
 
         List<Document> splitDocuments = documentSplitter(documents);
         vectorStore.accept(splitDocuments);
-        return documents.size();
+        return splitDocuments.size();
     }
 
     private List<Document> documentSplitter(List<Document> documents) {
-        TokenTextSplitter splitter = new TokenTextSplitter(800, 350, 5, 10000, true);
+        TextSplitter splitter = new CustomCoverLetterResumeTextSplitter();
         return splitter.apply(documents);
     }
 

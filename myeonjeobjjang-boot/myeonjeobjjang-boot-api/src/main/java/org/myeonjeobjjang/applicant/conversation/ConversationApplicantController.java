@@ -61,6 +61,7 @@ public class ConversationApplicantController {
         ));
     }
 
+    @Deprecated
     @PostMapping("/{conversationId}/react")
     public ResponseEntity<String> mockInterviewReActChat(
         @AuthenticationPrincipal PrincipalDetails principalDetails,

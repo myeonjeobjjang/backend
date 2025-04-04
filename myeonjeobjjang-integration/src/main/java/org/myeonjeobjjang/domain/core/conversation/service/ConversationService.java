@@ -15,5 +15,6 @@ public interface ConversationService {
 
     String mockInterviewToolsChat(Member member, String userMessage, Long conversationId);
 
+    @Deprecated
     String mockInterviewReActChat(Member member, String userMessage, Long conversationId);
 }

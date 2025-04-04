@@ -14,4 +14,6 @@ public interface ConversationService {
     ConversationLogNoOffsetGetResponse noOffsetGetConversationLog(Long conversationId, LocalDateTime lastConversationCreatedAt, Integer amount);
 
     String mockInterviewToolsChat(Member member, String userMessage, Long conversationId);
+
+    String mockInterviewReActChat(Member member, String userMessage, Long conversationId);
 }

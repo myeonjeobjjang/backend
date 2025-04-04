@@ -68,7 +68,7 @@ public class CoverLetterServiceImpl implements CoverLetterService {
     }
 
     @Override
-    public int embeddingCoverLetter(Long coverLetterId, Long conversationId) {
+    public int embeddingCoverLetter(Long coverLetterId, String conversationId) {
         List<CoverLetterInfoProjection> coverLetterInfoProjections = coverLetterRepository.findByCoverLetterId(coverLetterId);
         return vectorDBService.coverLetterEmbedding(
             coverLetterInfoProjections.stream().map(CoverLetterEmbeddingRequest::toDto).toList(),

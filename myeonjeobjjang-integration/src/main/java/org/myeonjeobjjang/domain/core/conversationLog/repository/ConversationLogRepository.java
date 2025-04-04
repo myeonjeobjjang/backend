@@ -14,10 +14,10 @@ public interface ConversationLogRepository extends JpaRepository<ConversationLog
         select cl
         from ConversationLog cl
         where cl.conversationId = :conversationId and cl.deletedAt is null
-        order by cl.createdAt DESC
+        order by cl.createdAt ASC
         limit :lastN
         """)
-    List<ConversationLog> findAllByConversationId(String conversationId, int lastN);
+    List<ConversationLog> findAllByConversationId(@Param("conversationId") String conversationId, @Param("lastN") int lastN);
 
     void deleteAllByConversationId(String conversationId);
 

@@ -22,8 +22,8 @@ public class ConversationApplicantController {
     @PostMapping("/coverLetters/{coverLetterId}/resumes/{resumeId}")
     public ResponseEntity<ConversationCreateResponse> create(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
-        @PathVariable Long coverLetterId,
-        @PathVariable Long resumeId
+        @PathVariable(name = "coverLetterId") Long coverLetterId,
+        @PathVariable(name = "resumeId") Long resumeId
     ) {
         Member member = principalDetails.getMember();
         return ResponseEntity.ok(conversationService.create(member, coverLetterId, resumeId));
@@ -33,7 +33,7 @@ public class ConversationApplicantController {
     public String mockInterviewChat(
         @AuthenticationPrincipal PrincipalDetails principalDetails,
         @RequestBody @Validated MockInterviewChatApplicantRequest request,
-        @PathVariable Long conversationId
+        @PathVariable(name = "conversationId") Long conversationId
     ) {
         Member member = principalDetails.getMember();
         return conversationService.mockInterviewChat(member, request.userMessage(), conversationId);
@@ -45,5 +45,34 @@ public class ConversationApplicantController {
         @RequestBody @Validated ConversationLogsApplicantResponse request
     ) {
         return ResponseEntity.ok(conversationService.noOffsetGetConversationLog(conversationId, request.lastConversationCreatedAt(), request.amount()));
+    }
+
+    @PostMapping("/{conversationId}/tools")
+    public ResponseEntity<String> mockInterviewToolsChat(
+        @AuthenticationPrincipal PrincipalDetails principalDetails,
+        @RequestBody @Validated MockInterviewChatApplicantRequest request,
+        @PathVariable(name = "conversationId") Long conversationId
+    ) {
+        Member member = principalDetails.getMember();
+        return ResponseEntity.ok(conversationService.mockInterviewToolsChat(
+            member,
+            request.userMessage(),
+            conversationId
+        ));
+    }
+
+    @Deprecated
+    @PostMapping("/{conversationId}/react")
+    public ResponseEntity<String> mockInterviewReActChat(
+        @AuthenticationPrincipal PrincipalDetails principalDetails,
+        @RequestBody @Validated MockInterviewChatApplicantRequest request,
+        @PathVariable(name = "conversationId") Long conversationId
+    ) {
+        Member member = principalDetails.getMember();
+        return ResponseEntity.ok(conversationService.mockInterviewReActChat(
+            member,
+            request.userMessage(),
+            conversationId
+        ));
     }
 }

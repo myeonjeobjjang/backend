@@ -1,6 +1,10 @@
 package org.myeonjeobjjang.domain.core.coverLetter.repository.dto;
 
+import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.coverLetter.entity.CoverLetter;
+import org.myeonjeobjjang.domain.core.industry.entity.Industry;
+import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
+import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 
 public class CoverLetterProjection {
     public interface CoverLetterInfoProjection {
@@ -14,11 +18,9 @@ public class CoverLetterProjection {
     }
     public interface CoverLetterInfoForConversationProjection {
         CoverLetter getCoverLetter();
-        String getJobName();
-        String getDescription();
-        String getCompanyName();
-        String getCompanyInformation();
-        String getIndustryName();
-        String getIndustryInformation();
+        JobDescription getJobDescription();
+        JobPosting getJobPosting();
+        Company getCompany();
+        Industry getIndustry();
     }
 }

@@ -12,4 +12,9 @@ public interface ConversationService {
     String mockInterviewChat(Member member, String userMessage, Long conversationId);
 
     ConversationLogNoOffsetGetResponse noOffsetGetConversationLog(Long conversationId, LocalDateTime lastConversationCreatedAt, Integer amount);
+
+    String mockInterviewToolsChat(Member member, String userMessage, Long conversationId);
+
+    @Deprecated
+    String mockInterviewReActChat(Member member, String userMessage, Long conversationId);
 }

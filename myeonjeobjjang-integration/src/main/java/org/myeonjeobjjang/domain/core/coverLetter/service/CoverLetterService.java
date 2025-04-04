@@ -11,7 +11,7 @@ public interface CoverLetterService {
 
     CoverLetterInfoResponse get(Long coverLetterId);
 
-    int embeddingCoverLetter(Long coverLetterId, Long conversationId);
+    int embeddingCoverLetter(Long coverLetterId, String conversationId);
 
     CoverLetterInfoForConversationProjection findCoverLetterForConversation(Long coverLetterId);
 }

@@ -29,7 +29,7 @@ public class VectorDBServiceImpl implements VectorDBService {
     }
 
     @Override
-    public Integer coverLetterEmbedding(List<CoverLetterEmbeddingRequest> coverLetterEmbeddingRequests, Long conversationId) {
+    public Integer coverLetterEmbedding(List<CoverLetterEmbeddingRequest> coverLetterEmbeddingRequests, String conversationId) {
         Map<String, Object> documentMetadata = new HashMap<>();
         documentMetadata.put("category", "cover_letter");
         documentMetadata.put("conversation_id", conversationId);
@@ -45,7 +45,7 @@ public class VectorDBServiceImpl implements VectorDBService {
     }
 
     @Override
-    public Integer resumeEmbedding(Resume resume, Long conversationId) {
+    public Integer resumeEmbedding(Resume resume, String conversationId) {
         Map<String, Object> documentMetadata = new HashMap<>();
         documentMetadata.put("category", "resume");
         documentMetadata.put("conversation_id", conversationId);
@@ -95,5 +95,19 @@ public class VectorDBServiceImpl implements VectorDBService {
             .filterExpression(b.and(b.eq("file_name", fileName), b.eq("user_name", userName)).build())
             .build()
         );
+    }
+
+    @Override
+    public List<Document> retrievedDocs(String query, Integer topK, Map<String, Object> documentMetadata) {
+        FilterExpressionBuilder b = new FilterExpressionBuilder();
+        FilterExpressionBuilder.Op op = b.in("category", "resume", "cover_letter");
+        for (Map.Entry<String, Object> e : documentMetadata.entrySet()) {
+            op = b.and(op, b.eq(e.getKey(), e.getValue()));
+        }
+        return vectorStore.similaritySearch(SearchRequest.builder()
+            .query(query)
+            .topK(topK)
+            .filterExpression(op.build())
+            .build());
     }
 }

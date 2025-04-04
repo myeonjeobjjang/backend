@@ -6,7 +6,11 @@ import lombok.Builder;
 import lombok.Getter;
 import lombok.NoArgsConstructor;
 import org.myeonjeobjjang.domain.common.BaseEntity;
+import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.coverLetter.entity.CoverLetter;
+import org.myeonjeobjjang.domain.core.industry.entity.Industry;
+import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
+import org.myeonjeobjjang.domain.core.jobPosting.entity.JobPosting;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.resume.entity.Resume;
 
@@ -20,31 +24,41 @@ public class Conversation extends BaseEntity {
     @ManyToOne(fetch = FetchType.LAZY)
     private Member member;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "cover_letter_id")
     private CoverLetter coverLetter;
     @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "resume_id")
     private Resume resume;
-    @Column(columnDefinition = "TEXT")
-    private String industryInfo;
-    @Column(columnDefinition = "TEXT")
-    private String companyInfo;
-    @Column(columnDefinition = "TEXT")
-    private String jobDescriptionInfo;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "industry_id")
+    private Industry industry;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "compnay_id")
+    private Company company;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_description_id")
+    private JobDescription jobDescription;
+    @ManyToOne(fetch = FetchType.LAZY)
+    @JoinColumn(name = "job_posting_id")
+    private JobPosting jobPosting;
 
     @Builder
     private Conversation(
         Member member,
         CoverLetter coverLetter,
         Resume resume,
-        String industryInfo,
-        String companyInfo,
-        String jobDescriptionInfo
+        Industry industry,
+        Company company,
+        JobDescription jobDescription,
+        JobPosting jobPosting
     ) {
         this.member = member;
         this.coverLetter = coverLetter;
         this.resume = resume;
-        this.industryInfo = industryInfo;
-        this.companyInfo = companyInfo;
-        this.jobDescriptionInfo = jobDescriptionInfo;
+        this.industry = industry;
+        this.company = company;
+        this.jobDescription = jobDescription;
+        this.jobPosting = jobPosting;
     }
 }
 

@@ -7,6 +7,7 @@ import org.myeonjeobjjang.domain.core.jobDescription.entity.JobDescription;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.springframework.data.jpa.repository.JpaRepository;
 import org.springframework.data.jpa.repository.Query;
+import org.springframework.data.repository.query.Param;
 
 import java.util.List;
 import java.util.Optional;
@@ -31,17 +32,15 @@ public interface CoverLetterRepository extends JpaRepository<CoverLetter,Long> {
     where cl.coverLetterId = :coverLetterId
     order by cli.questionNumber
     """)
-    List<CoverLetterProjection.CoverLetterInfoProjection> findByCoverLetterId(Long coverLetterId);
+    List<CoverLetterProjection.CoverLetterInfoProjection> findByCoverLetterId(@Param("coverLetterId") Long coverLetterId);
 
     @Query("""
     select
     cl coverLetter,
-    jd.jobName jobName,
-    jd.description description,
-    c.companyName companyName,
-    c.companyInformation companyInformation,
-    i.industryName industryName,
-    i.industryInformation industryInformation
+    jd jobDescription,
+    jp jobPosting,
+    c company,
+    i industry
     from CoverLetter cl
     left join JobDescription jd
     on cl.jobDescription = jd
@@ -53,5 +52,5 @@ public interface CoverLetterRepository extends JpaRepository<CoverLetter,Long> {
     on c.industry = i
     where cl.coverLetterId = :coverLetterId
     """)
-    Optional<CoverLetterInfoForConversationProjection> findCoverLetterForConversation(Long coverLetterId);
+    Optional<CoverLetterInfoForConversationProjection> findCoverLetterForConversation(@Param("coverLetterId") Long coverLetterId);
 }

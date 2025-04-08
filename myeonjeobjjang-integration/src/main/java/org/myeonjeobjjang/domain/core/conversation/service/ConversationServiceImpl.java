@@ -17,6 +17,7 @@ import org.myeonjeobjjang.infra.client.mockInterview.MockInterviewOpenAiClient;
 import org.myeonjeobjjang.infra.client.mockInterview.MockInterviewOpenAiReActClient;
 import org.myeonjeobjjang.infra.client.mockInterview.MockInterviewOpenAiToolClient;
 import org.myeonjeobjjang.infra.client.mockInterview.dto.MockInterviewClientRequest.MockInterviewChatRequest;
+import org.myeonjeobjjang.infra.client.mockInterview.supervisorPattern.MockInterviewSupervisorAgentClient;
 import org.springframework.stereotype.Service;
 
 import java.time.LocalDateTime;
@@ -34,6 +35,7 @@ public class ConversationServiceImpl implements ConversationService {
     private final MockInterviewOpenAiClient mockInterviewOpenAiClient;
     private final MockInterviewOpenAiToolClient mockInterviewOpenAiToolClient;
     private final MockInterviewOpenAiReActClient mockInterviewOpenAiReActClient;
+    private final MockInterviewSupervisorAgentClient mockInterviewSupervisorAgentClient;
     private final ConversationLogService conversationLogService;
 
     private final String MOCK_INTERVIEW_CONVERSATION_PREFIX = "MOCK_INTERVIEW_";
@@ -87,6 +89,17 @@ public class ConversationServiceImpl implements ConversationService {
         Conversation conversation = conversationRepository.findByConversationIdAndMember(conversationId, member)
             .orElseThrow(() -> new BaseException(CONVERSATION_NOT_FOUND));
         return mockInterviewOpenAiReActClient.mockInterviewChat(MockInterviewChatRequest.toDto(
+            userMessage,
+            conversation,
+            MOCK_INTERVIEW_CONVERSATION_PREFIX
+        ));
+    }
+
+    @Override
+    public String mockInterviewSupervisorChat(Member member, String userMessage, Long conversationId) {
+        Conversation conversation = conversationRepository.findByConversationIdAndMember(conversationId, member)
+            .orElseThrow(() -> new BaseException(CONVERSATION_NOT_FOUND));
+        return mockInterviewSupervisorAgentClient.mockInterviewChat(MockInterviewChatRequest.toDto(
             userMessage,
             conversation,
             MOCK_INTERVIEW_CONVERSATION_PREFIX

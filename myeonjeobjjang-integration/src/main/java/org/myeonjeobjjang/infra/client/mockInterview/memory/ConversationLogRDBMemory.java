@@ -1,4 +1,4 @@
-package org.myeonjeobjjang.infra.client.mockInterview;
+package org.myeonjeobjjang.infra.client.mockInterview.memory;
 
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.common.util.MessageConverter;

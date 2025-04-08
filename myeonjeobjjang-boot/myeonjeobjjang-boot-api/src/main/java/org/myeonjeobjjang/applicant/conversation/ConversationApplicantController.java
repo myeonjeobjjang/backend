@@ -75,4 +75,18 @@ public class ConversationApplicantController {
             conversationId
         ));
     }
+
+    @PostMapping("/{conversationId}/supervisor")
+    public ResponseEntity<String> mockInterviewSupervisorChat(
+        @AuthenticationPrincipal PrincipalDetails principalDetails,
+        @RequestBody @Validated MockInterviewChatApplicantRequest request,
+        @PathVariable(name = "conversationId") Long conversationId
+    ) {
+        Member member = principalDetails.getMember();
+        return ResponseEntity.ok(conversationService.mockInterviewSupervisorChat(
+            member,
+            request.userMessage(),
+            conversationId
+        ));
+    }
 }

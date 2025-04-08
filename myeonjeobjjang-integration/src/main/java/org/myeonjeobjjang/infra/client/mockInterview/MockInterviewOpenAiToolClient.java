@@ -2,6 +2,7 @@ package org.myeonjeobjjang.infra.client.mockInterview;
 
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.infra.client.mockInterview.dto.MockInterviewClientRequest.MockInterviewChatRequest;
+import org.myeonjeobjjang.infra.client.mockInterview.memory.ConversationLogRDBMemory;
 import org.myeonjeobjjang.infra.client.mockInterview.tools.*;
 import org.springframework.ai.chat.client.ChatClient;
 import org.springframework.ai.chat.client.advisor.MessageChatMemoryAdvisor;

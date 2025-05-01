@@ -39,6 +39,10 @@ public class MemberServiceImpl implements MemberService {
         return getLoginOrSignUpResponse(createdMember);
     }
 
+    public LoginOrSignUpResponse refreshTokens(Member member) {
+        return getLoginOrSignUpResponse(member);
+    }
+
     private LoginOrSignUpResponse getLoginOrSignUpResponse(Member createdMember) {
         long currentTimeMillis = System.currentTimeMillis();
         JwtPairResponse jwtPairResponse = JwtPairResponse.toDto(

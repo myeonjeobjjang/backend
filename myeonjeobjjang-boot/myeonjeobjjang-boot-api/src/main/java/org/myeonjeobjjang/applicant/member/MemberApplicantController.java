@@ -5,6 +5,7 @@ import org.myeonjeobjjang.applicant.member.dto.MemberApplicantResponse.MemberInf
 import org.myeonjeobjjang.config.security.PrincipalDetails;
 import org.myeonjeobjjang.domain.core.member.entity.Member;
 import org.myeonjeobjjang.domain.core.member.service.MemberService;
+import org.myeonjeobjjang.domain.core.member.service.dto.MemberResponse;
 import org.springframework.http.ResponseEntity;
 import org.springframework.security.core.annotation.AuthenticationPrincipal;
 import org.springframework.web.bind.annotation.GetMapping;
@@ -21,5 +22,13 @@ public class MemberApplicantController {
     public ResponseEntity<MemberInfoApplicantResponse> whoIsMe(@AuthenticationPrincipal PrincipalDetails principalDetails) {
         Member member = principalDetails.getMember();
         return ResponseEntity.ok(new MemberInfoApplicantResponse(member.getMemberId(), member.getUserName(), member.getEmail(), member.getRole()));
+    }
+
+    @GetMapping(value = "/refreshTokens")
+    public ResponseEntity<MemberResponse.LoginOrSignUpResponse> refreshTokens(
+        @AuthenticationPrincipal PrincipalDetails principalDetails
+    ) {
+        Member member = principalDetails.getMember();
+        return ResponseEntity.ok(memberService.refreshTokens(member));
     }
 }

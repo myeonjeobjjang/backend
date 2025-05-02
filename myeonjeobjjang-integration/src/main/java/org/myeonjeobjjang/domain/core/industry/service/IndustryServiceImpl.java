@@ -4,9 +4,13 @@ import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.industry.entity.Industry;
 import org.myeonjeobjjang.domain.core.industry.repository.IndustryRepository;
 import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryRequest.IndustryCreateRequest;
+import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryResponse;
 import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryResponse.IndustryInfoResponse;
+import org.myeonjeobjjang.domain.core.industry.service.dto.IndustryResponse.IndustryInfoResponses;
 import org.myeonjeobjjang.exception.BaseException;
 import org.springframework.stereotype.Service;
+
+import java.util.List;
 
 import static org.myeonjeobjjang.domain.core.industry.IndustryErrorCode.DUPLICATED_INDUSTRY_NAME;
 import static org.myeonjeobjjang.domain.core.industry.IndustryErrorCode.INDUSTRY_NOT_FOUND;
@@ -33,5 +37,10 @@ public class IndustryServiceImpl implements IndustryService {
     public Industry findById(Long industryId) {
         return industryRepository.findById(industryId)
             .orElseThrow(() -> new BaseException(INDUSTRY_NOT_FOUND));
+    }
+
+    public IndustryInfoResponses getIndustryList() {
+        List<Industry> industries = industryRepository.findAll();
+        return IndustryInfoResponses.toDto(industries);
     }
 }

@@ -1,13 +1,18 @@
 package org.myeonjeobjjang.domain.core.company.service;
 
+import jakarta.transaction.Transactional;
 import lombok.RequiredArgsConstructor;
 import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.company.repository.CompanyRepository;
 import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection.CompanyInfoProjection;
 import org.myeonjeobjjang.domain.core.company.service.dto.CompanyRequest.CompanyCreateRequest;
 import org.myeonjeobjjang.domain.core.company.service.dto.CompanyResponse.CompanyInfoResponse;
+import org.myeonjeobjjang.domain.core.companyAdministrator.entity.CompanyAdministrator;
+import org.myeonjeobjjang.domain.core.companyAdministrator.repository.CompanyAdministratorRepository;
 import org.myeonjeobjjang.domain.core.industry.entity.Industry;
 import org.myeonjeobjjang.domain.core.industry.service.IndustryService;
+import org.myeonjeobjjang.domain.core.member.entity.Member;
+import org.myeonjeobjjang.domain.core.member.entity.Role;
 import org.myeonjeobjjang.exception.BaseException;
 import org.springframework.data.domain.Page;
 import org.springframework.data.domain.PageImpl;
@@ -21,16 +26,19 @@ import static org.myeonjeobjjang.domain.core.company.CompanyErrorCode.DUPLICATED
 @RequiredArgsConstructor
 public class CompanyServiceImpl implements CompanyService {
     private final CompanyRepository companyRepository;
+    private final CompanyAdministratorRepository companyAdministratorRepository;
 
     private final IndustryService industryService;
 
-    public CompanyInfoResponse create(CompanyCreateRequest request) {
+    @Transactional
+    public CompanyInfoResponse create(CompanyCreateRequest request, Member actor) {
         if (companyRepository.findCompanyByCompanyName(request.companyName()).isPresent())
             throw new BaseException(DUPLICATED_COMPANY_NAME);
         Industry industry = industryService.findById(request.industryId());
-        Company newCompany = request.toEntity(industry);
-        Company savedCompany = companyRepository.save(newCompany);
-        return CompanyInfoResponse.toDto(savedCompany);
+        Company company = companyRepository.save(request.toEntity(industry));
+        if (actor.getRole().equals(Role.COMPANY))
+            companyAdministratorRepository.save(CompanyAdministrator.builder().company(company).administrator(actor).build());
+        return CompanyInfoResponse.toDto(company);
     }
 
     public CompanyInfoResponse get(Long companyId) {

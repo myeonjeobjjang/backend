@@ -12,6 +12,7 @@ public enum SecurityErrorCode implements BaseErrorCode {
     UNSUPPORTED_TOKEN_TYPE("COM_SECURITY_002", "지원하는 토큰 타입이 아닙니다.",HttpStatus.UNSUPPORTED_MEDIA_TYPE),
     INVALID_JWT("COM_SECURITY_003","유효한 JWT가 아닙니다.",HttpStatus.BAD_REQUEST),
     UNSUPPORTED_JWT("COM_SECURITY_004","지원하는 JWT가 아닙니다.",HttpStatus.BAD_REQUEST),
+    NO_PERMISSION("COM_SECURITY_005", "권한이 없는 접근입니다.", HttpStatus.FORBIDDEN),
 
     ;
     private final String errorCode;

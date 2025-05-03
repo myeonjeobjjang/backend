@@ -7,6 +7,7 @@ import org.myeonjeobjjang.domain.core.company.repository.CompanyRepository;
 import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection.CompanyInfoProjection;
 import org.myeonjeobjjang.domain.core.company.service.dto.CompanyRequest.CompanyCreateRequest;
 import org.myeonjeobjjang.domain.core.company.service.dto.CompanyResponse.CompanyInfoResponse;
+import org.myeonjeobjjang.domain.core.company.service.dto.CompanyResponse.CompanyInfoResponses;
 import org.myeonjeobjjang.domain.core.companyAdministrator.entity.CompanyAdministrator;
 import org.myeonjeobjjang.domain.core.companyAdministrator.repository.CompanyAdministratorRepository;
 import org.myeonjeobjjang.domain.core.industry.entity.Industry;
@@ -19,6 +20,9 @@ import org.springframework.data.domain.PageImpl;
 import org.springframework.data.domain.Pageable;
 import org.springframework.stereotype.Service;
 
+import java.util.List;
+
+import static org.myeonjeobjjang.config.security.SecurityErrorCode.NO_PERMISSION;
 import static org.myeonjeobjjang.domain.core.company.CompanyErrorCode.COMPANY_NOT_FOUND;
 import static org.myeonjeobjjang.domain.core.company.CompanyErrorCode.DUPLICATED_COMPANY_NAME;
 
@@ -45,6 +49,18 @@ public class CompanyServiceImpl implements CompanyService {
         Company company = companyRepository.findById(companyId)
             .orElseThrow(() -> new BaseException(COMPANY_NOT_FOUND));
         return CompanyInfoResponse.toDto(company);
+    }
+
+    public CompanyInfoResponses getMyCompanies(Member actor) {
+        List<Company> companyList;
+        if (actor.getRole().equals(Role.COMPANY)) {
+            companyList = companyAdministratorRepository.findAllByAdministrator(actor);
+        } else if (actor.getRole().equals(Role.ADMIN)) {
+            companyList = companyRepository.findAll();
+        } else {
+            throw new BaseException(NO_PERMISSION);
+        }
+        return CompanyInfoResponses.toDto(companyList);
     }
 
     @Override

@@ -3,6 +3,8 @@ package org.myeonjeobjjang.domain.core.company.service.dto;
 import org.myeonjeobjjang.domain.core.company.entity.Company;
 import org.myeonjeobjjang.domain.core.company.repository.dto.CompanyProjection.CompanyInfoProjection;
 
+import java.util.List;
+
 public class CompanyResponse {
     public record CompanyInfoResponse(
         Long companyId,
@@ -26,6 +28,15 @@ public class CompanyResponse {
                 projection.getCompanyInformation(),
                 projection.getIndustryId()
             );
+        }
+    }
+
+    public record CompanyInfoResponses(
+        List<CompanyInfoResponse> companies
+    ) {
+        public static CompanyInfoResponses toDto(List<Company> companyList) {
+            return new CompanyInfoResponses(companyList.stream()
+                .map(CompanyInfoResponse::toDto).toList());
         }
     }
 }

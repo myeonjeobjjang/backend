@@ -16,10 +16,10 @@ public class CompanyAdministrator {
     @Column(name = "company_administrator_id")
     @GeneratedValue(strategy = GenerationType.IDENTITY)
     private Long companyAdministratorId;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "companyId")
     private Company company;
-    @ManyToOne
+    @ManyToOne(fetch = FetchType.LAZY)
     @JoinColumn(name = "administratorId")
     private Member administrator;
 

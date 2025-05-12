@@ -17,4 +17,22 @@ public class CompanyRequest {
                 .build();
         }
     }
+    public record CompanyEditRequest(
+        String companyName,
+        String companyInformation,
+        Long industryId
+    ) {
+        public Company update(Company company, Industry newIndustry) {
+            if(companyName() != null && !companyName().isBlank()) {
+                company.setCompanyName(companyName());
+            }
+            if(companyInformation() != null && !companyInformation().isBlank()) {
+                company.setCompanyInformation(companyInformation());
+            }
+            if(industryId != null && newIndustry != null) {
+                company.setIndustry(newIndustry);
+            }
+            return company;
+        }
+    }
 }

@@ -17,4 +17,6 @@ public interface CompanyAdministratorRepository extends JpaRepository<CompanyAdm
         where ca.administrator = :administrator
         """)
     List<Company> findAllByAdministrator(Member administrator);
+
+    Boolean existsByAdministratorAndCompany(Member administrator, Company company);
 }

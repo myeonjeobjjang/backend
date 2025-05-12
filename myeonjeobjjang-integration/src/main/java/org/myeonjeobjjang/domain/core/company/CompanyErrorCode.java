@@ -10,6 +10,7 @@ import org.springframework.http.HttpStatus;
 public enum CompanyErrorCode implements BaseErrorCode {
     COMPANY_NOT_FOUND("DOM_COMPANY_001","해당 기업이 없습니다.", HttpStatus.UNAUTHORIZED),
     DUPLICATED_COMPANY_NAME("DOM_COMPANY_002","이미 사용중인 기업명입니다.", HttpStatus.IM_USED),
+    NOT_COMPANY_ADMINISTRATOR("DOM_COMPANY_003","관리중인 기업이 아닙니다.", HttpStatus.FORBIDDEN),
     ;
     private final String errorCode;
     private final String message;

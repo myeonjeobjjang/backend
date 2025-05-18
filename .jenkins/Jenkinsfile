@@ -13,14 +13,13 @@ pipeline {
     }
 
     tools {
-		// gradle 또는 maven 등 빌드 도구 등록 (Jenkins 관리에서 미리 등록 필요)
-        gradle 'jenkins_gradle'
+		gradle 'gradle'
     }
 
     stages {
 		stage('Git Checkout') {
 			steps {
-                git branch: 'develop', url: "https://github.com/${REPOSITORY}.git"
+				git branch: 'develop', url: "https://github.com/${REPOSITORY}.git"
             }
         }
 
@@ -83,13 +82,13 @@ pipeline {
 			steps {
 				sh '''
 				sshpass -p ${SSH_PASS} ssh -P ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "sh
-					cd /home/jenkins/docker
-					sudo docker login ${REGISTRY} -u ${GITHUB_ACTOR} -p ${GITHUB_REGISTRY_TOKEN}
-					sudo docker container stop spring
-					sudo docker container rm spring
-					sudo docker image rm ${REGISTRY}/${REPOSITORY}-onprem:${VERSION}
-					sudo docker-compose --env-file=onprem.env -f docker-compose.yml -p backend up -d
-					sudo docker image prune -af
+				cd /home/jenkins/docker
+				sudo docker login ${REGISTRY} -u ${GITHUB_ACTOR} -p ${GITHUB_REGISTRY_TOKEN}
+				sudo docker container stop spring
+				sudo docker container rm spring
+				sudo docker image rm ${REGISTRY}/${REPOSITORY}-onprem:${VERSION}
+				sudo docker-compose --env-file=onprem.env -f docker-compose.yml -p backend up -d
+				sudo docker image prune -af
 				"
 				'''
             }

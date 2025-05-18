@@ -63,7 +63,7 @@ pipeline {
 			steps {
 				sh '''
                 cd docker/onprem
-				echo -e "\nSPRING_IMAGE=${REGISTRY}/${REPOSITORY}-onprem:${VERSION}" >> onprem.env
+				echo "\nSPRING_IMAGE=${REGISTRY}/${REPOSITORY}-onprem:${VERSION}" >> onprem.env
                 '''
             }
         }
@@ -73,7 +73,7 @@ pipeline {
 				// sshpass로 아이디/비밀번호 방식 scp 사용
                 sh '''
                 cd docker/onprem
-                sshpass -p $SSH_PASS scp -P $SSH_PORT docker-compose.yml onprem.env $SSH_USER@$SSH_HOST:/home/jenkins/docker
+                sshpass -p $SSH_PASS scp -P $SSH_PORT -o StrictHostKeyChecking=no docker-compose.yaml onprem.env $SSH_USER@$SSH_HOST:/home/mjj-back
                 '''
             }
         }
@@ -81,14 +81,13 @@ pipeline {
         stage('Deploy') {
 			steps {
 				sh '''
-				sshpass -p ${SSH_PASS} ssh -P ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "sh
-				cd /home/jenkins/docker
-				sudo docker login ${REGISTRY} -u ${GITHUB_ACTOR} -p ${GITHUB_REGISTRY_TOKEN}
-				sudo docker container stop spring
-				sudo docker container rm spring
-				sudo docker image rm ${REGISTRY}/${REPOSITORY}-onprem:${VERSION}
-				sudo docker-compose --env-file=onprem.env -f docker-compose.yml -p backend up -d
-				sudo docker image prune -af
+				sshpass -p $SSH_PASS ssh -p $SSH_PORT $SSH_USER@$SSH_HOST "cd /home/mjj-back; \
+				docker login ${REGISTRY} -u ${GITHUB_ACTOR} -p ${GITHUB_REGISTRY_TOKEN}; \
+				docker container stop spring || true; \
+				docker container rm spring || true; \
+				docker image rm ${REGISTRY}/${REPOSITORY}-onprem:${VERSION} || true; \
+				docker-compose --env-file=onprem.env -f docker-compose.yaml -p backend up -d; \
+				docker image prune -af || true;
 				"
 				'''
             }

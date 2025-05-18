@@ -1,0 +1,98 @@
+pipeline {
+	agent any
+
+    environment {
+		REGISTRY = 'ghcr.io'
+        REPOSITORY = 'myeonjeobjjang/backend'
+        GITHUB_ACTOR = credentials('GITHUB_ACTOR')
+        GITHUB_REGISTRY_TOKEN = credentials('GITHUB_REGISTRY_TOKEN')
+        SSH_HOST = credentials('MJJ_BACKEND_SSH_HOST')
+        SSH_PORT = credentials('MJJ_BACKEND_SSH_PORT')
+        SSH_USER = credentials('MJJ_BACKEND_SSH_USER')
+        SSH_PASS = credentials('MJJ_BACKEND_SSH_PASS')
+    }
+
+    tools {
+		// gradle 또는 maven 등 빌드 도구 등록 (Jenkins 관리에서 미리 등록 필요)
+        gradle 'jenkins_gradle'
+    }
+
+    stages {
+		stage('Git Checkout') {
+			steps {
+                git branch: 'develop', url: "https://github.com/${REPOSITORY}.git"
+            }
+        }
+
+        stage('Build') {
+			steps {
+				sh '''
+				cd ./myeonjeobjjang-boot/myeonjeobjjang-boot-api
+				../../gradlew clean build -x test
+				'''
+            }
+        }
+
+        stage('Test') {
+			steps {
+				sh '''
+				cd ./myeonjeobjjang-boot/myeonjeobjjang-boot-api
+				../../gradlew test
+				'''
+            }
+        }
+
+		stage('Get Version') {
+			steps {
+				script {
+					env.VERSION = sh(script: "git describe --tags || echo 'latest'", returnStdout: true).trim()
+				}
+			}
+		}
+
+        stage('Build and Push Image') {
+			steps {
+				sh '''
+                docker build --no-cache -t ${REGISTRY}/${REPOSITORY}-onprem:${VERSION} -f docker/onprem/Dockerfile ./myeonjeobjjang-boot/myeonjeobjjang-boot-api
+                echo ${GITHUB_REGISTRY_TOKEN} | docker login ${REGISTRY} -u ${GITHUB_ACTOR} --password-stdin
+                docker push ${REGISTRY}/${REPOSITORY}-onprem:${VERSION}
+                '''
+            }
+        }
+
+        stage('Write Docker Image Tag Information to .env File') {
+			steps {
+				sh '''
+                cd docker/onprem
+				echo -e "\nSPRING_IMAGE=${REGISTRY}/${REPOSITORY}-onprem:${VERSION}" >> onprem.env
+                '''
+            }
+        }
+
+        stage('Copy docker-compose.yml and env to Server') {
+			steps {
+				// sshpass로 아이디/비밀번호 방식 scp 사용
+                sh '''
+                cd docker/onprem
+                sshpass -p $SSH_PASS scp -P $SSH_PORT docker-compose.yml onprem.env $SSH_USER@$SSH_HOST:/home/jenkins/docker
+                '''
+            }
+        }
+
+        stage('Deploy') {
+			steps {
+				sh '''
+				sshpass -p ${SSH_PASS} ssh -P ${SSH_PORT} ${SSH_USER}@${SSH_HOST} "sh
+					cd /home/jenkins/docker
+					sudo docker login ${REGISTRY} -u ${GITHUB_ACTOR} -p ${GITHUB_REGISTRY_TOKEN}
+					sudo docker container stop spring
+					sudo docker container rm spring
+					sudo docker image rm ${REGISTRY}/${REPOSITORY}-onprem:${VERSION}
+					sudo docker-compose --env-file=onprem.env -f docker-compose.yml -p backend up -d
+					sudo docker image prune -af
+				"
+				'''
+            }
+        }
+    }
+}

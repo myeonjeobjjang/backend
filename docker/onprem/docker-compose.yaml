@@ -1,0 +1,10 @@
+version: '3.8'
+
+services:
+  spring-application:
+    container_name: spring
+    image: ${SPRING_IMAGE}
+    ports:
+      - ${SPRING_OUTER_PORT}:${SPRING_INNER_PORT}
+    volumes:
+      - ${LOCAL_SPRING_LOG_PATH}:/app/logs
